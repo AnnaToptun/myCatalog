@@ -1,16 +1,17 @@
 import { Checkbox, Container, FormGroup } from '@mui/material';
 import { Box } from '@mui/system';
-
 import { React, useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { useHistory } from 'react-router-dom';
 import { CardsUserContext } from '../Context/CardsUserProvider';
 import { Buttons } from '../UI/button/Buttons';
 import { CheckBox } from '../UI/checkbox/CheckBox';
 import { MyInput } from '../UI/input/MyInput';
-import classes from '../UI/checkbox/classes';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import classesPages from './styles/classesPages';
+import classes from '../UI/checkbox/classes';
+
 export function Login() {
-  const { auth, activeEmail, users, setUserCurrent } = useContext(CardsUserContext);
+  const { auth} = useContext(CardsUserContext);
 
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
@@ -57,9 +58,7 @@ export function Login() {
   const isPassValid = () => passSimpleReg.test(password);
   return (
     <Container>
-      <FormGroup
-        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20% 0' }}
-      >
+      <FormGroup style={classesPages.pageLoginRegister}>
         <MyInput
           error={errorLogin}
           value={login}
@@ -87,7 +86,7 @@ export function Login() {
           }
           label="Show password"
         />
-        <Box>
+        <Box style={classesPages.pageLoginButtons}>
           <Buttons onClick={loginEmailPassword}>Log in</Buttons>
           <Buttons onClick={signIn}>Sign in</Buttons>
         </Box>

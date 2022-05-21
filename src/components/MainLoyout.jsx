@@ -1,21 +1,21 @@
 
-import React, { useContext } from 'react'
+import { React, useContext } from 'react'
 import { Route, Switch, Redirect} from 'react-router-dom'
 import { Container } from '@mui/material'
 import { AllCard } from './AllCard'
 import { AsideUser } from './AsideUser'
 import { CardBookDatails } from './books/CardBookDatails'
-import { CreateCard } from './CreateCard'
+import { CreateCardGenre } from './create/CreateCardGenre'
 import { Header } from './Header'
 import { Login } from './Login'
-import { MyRouter } from './MyRouter'
 import { Register } from './Register'
 import { CardsUserContext } from '../Context/CardsUserProvider'
 
+import { Profile } from './Profile'
 export function MainLoyout () {
   const {user} = useContext(CardsUserContext)
   return (
-    <MyRouter>
+    
       <Container>
         <Header>
           {
@@ -28,8 +28,12 @@ export function MainLoyout () {
                 <Route path='/user/home'>
                     <AsideUser/>
                 </Route>
-                <Route path="/user/createCard">
-                  <CreateCard/>
+                <Route path="/user/create">
+                  <CreateCardGenre/>
+                </Route>
+               
+                <Route path='/user/profile/:id'>
+                  <Profile/>
                 </Route>
                 <Redirect to='/user/home'/>
               </Switch>
@@ -47,12 +51,15 @@ export function MainLoyout () {
               <Route path="/quest/home">
                 <AllCard/>
               </Route>
+              <Route path='/user/profile'>
+                  <Profile/>
+              </Route>
               <Redirect to="/quest/home"/>
             </Switch>
           }
          
         </Header>
       </Container>
-    </MyRouter>
+    
   )
 }

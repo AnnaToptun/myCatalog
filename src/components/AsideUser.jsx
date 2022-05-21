@@ -1,39 +1,37 @@
-import React, { useContext, useState, ReactNode } from 'react';
-import { updateDoc, doc } from 'firebase/firestore';
-import { Tabs, Tab, Typography, Box } from '@mui/material';
+
+import React from 'react';
+import { useState, useContext }from 'react';
+import { Tabs, Tab, Box } from '@mui/material'
+import { CardsUserContext } from '../Context/CardsUserProvider'
+import { CardBook } from './books/CardBook'
+import { SortedArray } from './books/SortedArray'
 import { AllCard } from './AllCard';
-import { AllCards } from '../App';
-import { CardsUserContext } from '../Context/CardsUserProvider';
-import { CardBook } from './books/CardBook';
-import { SortedArray } from './books/SortedArray';
+import classesPages from './styles/classesPages';
+
 interface TabPanelProps {
-  children: ReactNode;
+  children: React.ReactNode;
   index: number;
   value: number;
 }
 
 function TabPanel(props: TabPanelProps) {
-  const { children, value, index} = props;
+  const { children, value, index } = props;
 
   return (
     <div
       role="tabpanel"
-      hidden={value !== index}
+      hidden={value !== index} 
       id={`vertical-tabpanel-${index}`}
       aria-labelledby={`vertical-tab-${index}`}
-      
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
 
 export function AsideUser() {
-  const { books,  genres, setUserCurrent, users, userCurrent, addBookUser, userIdBooks} = useContext(CardsUserContext)
+  const {  genres, deleteBookUser, userCurrent, addBookUser, userIdBooks } =
+    useContext(CardsUserContext);
   const [value, setValue] = React.useState(0)
   const [sortBooks, setSortBooks] = useState([''])
 
@@ -47,63 +45,71 @@ export function AsideUser() {
       })
     )
   }
-  
-  const addBook = async (card) =>{
-    const id = userCurrent.id
-    console.log(userIdBooks) 
-    addBookUser(id, userIdBooks, card)
-    //window.location.reload()
-    
+  const delBookUser = async cardId => {
+    const id = userCurrent.id;
+    const booksid = cardId.id;
+    deleteBookUser(id, userIdBooks, booksid);
   }
-
+  const addBook = async card => {
+    const id = userCurrent.id;
+    console.log(userIdBooks);
+    addBookUser(id, userIdBooks, card);
+  }
   return (
-    <Box style={{ display: 'flex', flexWrap: 'wrap', height: 10 }}>
-      
+    <Box style={
+      (window.innerWidth < 500)
+      ?classesPages.pageAsideRegisterSmall
+      :classesPages.pageAsideRegister}>
+
       <Tabs
         orientation="vertical"
         variant="scrollable"
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"
-        sx={{ borderRight: '1px solid #000' }}
-        style={{ width: '250px', height: '60vh' }}
+        textColor="inherit"
+        style={
+          (window.innerWidth < 500)
+          ?classesPages.pageAsideTabsSmall
+          :classesPages.pageAsideTabs
+        }
       >
-        <Tab label="Всі книги"  />
-        <Tab label="Мої книги"  />
-        {
-          genres.map((g) =>(
-            <Tab
-              key={g.id}
-              label={g.genre}
-              onClick={() => sortBooksGenre(g.genre)}
-            />
-          ))
-        }
+        <Tab 
+          style={classesPages.pageAsideTab}
+          label="Всі книги" />
+        <Tab 
+          style={classesPages.pageAsideTab}
+          label="Мої книги" />
+        {genres.map(g => (
+          <Tab  
+            key={g.id} 
+            style={classesPages.pageAsideTab}
+            label={g.genre} 
+            onClick={() => sortBooksGenre(g.genre)} />
+        ))}
       </Tabs>
-      
 
-      <TabPanel value={value} index={0}>
-        {
-          books.map(card => (
-            <Box key={card.id} my={4}>
-              <CardBook addBook={addBook} card={card} />
-            </Box>
-          ))
-        }
+      <TabPanel value={value} index={0} >
+        <AllCard
+            delBookUser={delBookUser}
+            addBook={addBook}
+        />
+        
       </TabPanel>
-      <TabPanel value={value} index={1}>
-        {
-          userIdBooks.map(card => (
-            <Box key={card.id} my={4}>
-              <CardBook card={card}/>
+      <TabPanel value={value} index={1} style={classesPages.pageAllCard}>
+        <Box style={classesPages.pageAllCard}>
+          {userIdBooks.map(card => (
+            <Box key={card.id} my={4} >
+              <CardBook delBookUser={delBookUser} card={card} />
             </Box>
-          ))
-        }
+          ))}
+        </Box>
+        
       </TabPanel>
 
       {genres.map((g, index) => (
         <TabPanel value={value} key={g.id} index={index + 2}>
-          <SortedArray books={sortBooks}/>
+          <SortedArray delBookUser={delBookUser} books={sortBooks} />
         </TabPanel>
       ))}
     </Box>

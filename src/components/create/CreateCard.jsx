@@ -1,14 +1,14 @@
 import { Box, Container, FormGroup, MenuItem } from '@mui/material'
 import {React,  useContext, useState } from 'react'
-import { AllCards } from '../App'
-import { CardsUserContext } from '../Context/CardsUserProvider'
-import { Buttons } from '../UI/button/Buttons'
-import { MyInput } from '../UI/input/MyInput'
-import { MySelect } from '../UI/select/MySelect'
-import { CardBook } from './books/CardBook'
+import { useHistory } from 'react-router-dom'
+import { CardsUserContext } from '../../Context/CardsUserProvider'
+import { Buttons } from '../../UI/button/Buttons'
+import { MyInput } from '../../UI/input/MyInput'
+import { MySelect } from '../../UI/select/MySelect' 
+import classesCreate from '../styles/classesCreate'
 
 export function CreateCard () {
-  const {allCards, setAllCards, addCard, booksIdCollectionRef, genres} = useContext(CardsUserContext)
+  const { addCard, genres} = useContext(CardsUserContext)
   const [cardBook, setCardBook] = useState({
     title: '',
     avtor: '',
@@ -17,7 +17,7 @@ export function CreateCard () {
     discribe: '',
     img: ''
   })
-
+  const route = useHistory()
   const titleHandle = (value)=>{
     setCardBook({...cardBook, title: value})
   }
@@ -34,25 +34,16 @@ export function CreateCard () {
     setCardBook({...cardBook, img: value})
   }
   const createCard = ()=>{
-    setAllCards([...allCards, {
-      id: Date.now(),
-      title: cardBook.title,
-      avtor: cardBook.avtor,
-      genre: cardBook.genre,
-      year: cardBook.year,
-      discribe: cardBook.discribe,
-      img: cardBook.img
-    }])
-    addCard(booksIdCollectionRef, cardBook)
-    console.log(allCards)
+    addCard(cardBook)
+    route.push('/user/home')
   }
   const handleChange = (e) => {
     setCardBook({...cardBook, genre: e.target.value})
   }
   return (
-    <Container  style={{display: 'flex', flexDirection: 'column',  alignItems: 'center',  padding: '20% 0'}}>
+    <Container  style={classesCreate.card}>
       <FormGroup>
-        <Box style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap'}}>
+        <Box style={classesCreate.cardForm}>
           <MyInput
             type='text'
             value={cardBook.title}
@@ -68,7 +59,7 @@ export function CreateCard () {
             label='Автор'
           />
         </Box>
-        <Box style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap'}}>
+        <Box style={classesCreate.cardForm}>
           
           <MySelect 
             multiple
@@ -94,7 +85,7 @@ export function CreateCard () {
           />
         </Box>
  
-        <Box style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap'}}>
+        <Box style={classesCreate.cardForm}>
           <MyInput
             type='text'
             value={cardBook.discribe}

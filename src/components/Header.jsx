@@ -1,98 +1,63 @@
-import React, { useContext, useState, useEffect } from 'react'
-import {BrowserRouter as Router, Link} from 'react-router-dom';
-import logo from '../img/log.png'
-import './styles/Header.css'
-import { Container } from '@mui/material';
+import { React, useContext } from 'react'
+import { BrowserRouter as Router, Link} from 'react-router-dom';
+import { Box, Container } from '@mui/material';
 import { CardsUserContext } from '../Context/CardsUserProvider';
 import { signOut } from 'firebase/auth'
 import { useHistory } from 'react-router-dom';
-export function Header ({children}) {
-    const {user, auth, userCurrent, activeEmail, setUserCurrent, users} = useContext(CardsUserContext)
-    const [openMenu, setOpenMenu] = useState(false)
-    const route = useHistory()
-    const buttonMenu = ()=>{
-        (openMenu)? setOpenMenu(false): setOpenMenu(true)
-    }
+import TemporaryDrawer from '../UI/drawer/TemporaryDrawer';
+import logo from '../img/log.png'
+import './styles/Header.css'
 
+export function Header ({children}) {
+    const {user, auth, userCurrent} = useContext(CardsUserContext)
+    const route = useHistory()
      const logOut = async () =>{
         await signOut(auth)
         route.push('/quest/login')
      }
- 
-     
-
-   
     return (
         <Container>
             <Router>
-                <nav className='header'>
+                <nav className={
+                        (window.innerWidth<500)
+                        ?'header-adaptive'
+                        :'header'
+                    }>
                     <Link to={
                         (user)
                         ? '/user/home'
-                        : '/quest/home'
+                        : '/quest/login'
                     }>
-                        {
-                            (window.innerWidth <= 750)
-                            ?<img  style={{width: '150px'}}src={logo} alt="" />
-                            :<img  style={{width: '250px'}}src={logo} alt="" />
-                        }
-                        
+                        <img  style={{width: '250px'}}src={logo} alt="" />
                     </Link>
                     {
                         (user)
-                        ?   <div>
+                        ?   
+                            <Box className='header' >
                                 {
-                                    (window.innerWidth <= 750)
-                                    ? <div>
-                                        <button onClick={buttonMenu}>
-                                            |||
-                                        </button>
-                                        <ul className={openMenu
-                                        ?'header-burger-active'
-                                        :'header-burger-none'
-                                        }>  
-                                            <li><Link to="/user/home">{userCurrent.email} </Link></li>
-                                            <li><Link to="/user/home">Мої книги</Link></li>
-                                            <li><Link to="/user/createCard">Створити книгу</Link></li>
-                                            <li><Link to="/quest/login">Вихід</Link></li>
-                                        </ul>
-                                    </div>
-                                    :
+                                    (userCurrent.img === '')
+                                    ? <Link className='link-account' to={`/user/profile/${userCurrent.id}`}>{userCurrent.fistName} {userCurrent.lastName} </Link>
+                                    : <Link to={`/user/profile/${userCurrent.id}`}><img className='avatarUser' src={userCurrent.img} alt=''/></Link>
+                                }
+                                <TemporaryDrawer>
                                     <ul className='header-links'>
-                                        <li><Link to="/user/home">{userCurrent.email} </Link></li>
+                                        <li><Link to={`/user/profile/${userCurrent.id}`}>Профіль </Link></li>
                                         <li><Link to="/user/home">Мої книги</Link></li>
-                                        <li><Link to="/user/createCard">Створити книгу</Link></li>
+                                        <li><Link to="/user/create">Створити книгу/жанр</Link></li>
                                         <li><Link to="/quest/login" onClick={logOut}>Вихід</Link></li>
                                     </ul>
-                                }
-                                
-                            </div>
+                                </TemporaryDrawer>
+                            </Box>
                         : 
-                        <div>
-                        {
-                            (window.innerWidth <= 850)
-                            ? <div>
-                                <button onClick={buttonMenu}>
-                                    |||
-                                </button>
-                                <ul className={openMenu
-                                ?'header-burger-active'
-                                :'header-burger-none'
-                                }>
+                        <Box className='header-adaptive'>
+                            <TemporaryDrawer>
+                                <ul className='header-links'>
                                     <li><Link to="/quest/home">Головна</Link></li>
                                     <li><Link to="/quest/login">Вхід</Link></li>
                                     <li><Link to="/quest/register">Регістрація</Link></li>
                                 </ul>
-                            </div>
-                            :
-                            <ul className='header-links'>
-                                <li><Link to="/quest/home">Головна</Link></li>
-                                <li><Link to="/quest/login">Вхід</Link></li>
-                                <li><Link to="/quest/register">Регістрація</Link></li>
-                            </ul>
-                        }
-                        
-                    </div>
+                            </TemporaryDrawer>
+                        </Box>
                     }
                             
                 </nav>
@@ -100,8 +65,6 @@ export function Header ({children}) {
                     {children}
                 </main>
             </Router>
-           
-           
         </Container>
         
     )
