@@ -10,6 +10,12 @@ const profile = {
         alignItems: 'center',
         rowGap: '20px'
     },
+    profileEdit: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        rowGap: '20px'
+    },
     profileName: {
         color: '#ae5e0b',
         fontSize: '30px',

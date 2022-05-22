@@ -6,7 +6,7 @@ import { CardsUserContext } from '../Context/CardsUserProvider'
 import { CardBook } from './books/CardBook'
 import { SortedArray } from './books/SortedArray'
 import { AllCard } from './AllCard';
-import classesPages from './styles/classesPages';
+import classesPages from '../styles/classesPages';
 
 interface TabPanelProps {
   children: React.ReactNode;

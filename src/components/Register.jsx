@@ -8,7 +8,7 @@ import { Buttons } from '../UI/button/Buttons';
 import { CheckBox } from '../UI/checkbox/CheckBox';
 import { MyInput } from '../UI/input/MyInput';
 import classes from '../UI/checkbox/classes';
-import classesPages from './styles/classesPages';
+import classesPages from '../styles/classesPages';
 export function Register() {
   const { auth, addUser,  setUser } = useContext(CardsUserContext);
   const emailReg =
@@ -108,7 +108,10 @@ export function Register() {
   return (
     <Container  style={classesPages.pageLoginRegister}>
       <FormGroup>
-        <Box style={classesPages.pageAsideRegister}>
+        <Box style={(window.innerWidth<500)
+          ?classesPages.pageAsideRegisterSmall
+          :classesPages.pageAsideRegister
+          }>
           <MyInput
             value={fieldsForm.fistName}
             error={errorName}
@@ -130,7 +133,10 @@ export function Register() {
             onChange={event => lastNameHandler(event.target.value)}
           />
         </Box>
-        <Box style={classesPages.pageAsideRegister}>
+        <Box style={(window.innerWidth<500)
+          ?classesPages.pageAsideRegisterSmall
+          :classesPages.pageAsideRegister
+          }>
           <MyInput
             value={fieldsForm.birthday}
             error={errorDate}
@@ -152,7 +158,10 @@ export function Register() {
           />
         </Box>
 
-        <Box style={classesPages.pageAsideRegister}>
+        <Box style={(window.innerWidth<500)
+          ?classesPages.pageAsideRegisterSmall
+          :classesPages.pageAsideRegister
+          }>
           <MyInput
             value={fieldsForm.password}
             required
@@ -174,7 +183,10 @@ export function Register() {
             onChange={event => passConfirmHandler(event.target.value)}
           />
         </Box>
-        <Box style={classesPages.pageAsideRegister}>
+        <Box style={(window.innerWidth<500)
+          ?classesPages.pageAsideRegisterSmall
+          :classesPages.pageAsideRegister
+          }>
           <CheckBox
             control={
               <Checkbox
@@ -199,7 +211,10 @@ export function Register() {
             label="I accept the terms of use"
           />
         </Box>
-        <Box style={classesPages.pageAsideRegister}>
+        <Box style={(window.innerWidth<500)
+          ?classesPages.pageAsideRegisterSmall
+          :classesPages.pageAsideRegister
+          }>
           <Buttons onClick={() => route.push('/quest/login')}>Login</Buttons>
           <Buttons
             disabled={

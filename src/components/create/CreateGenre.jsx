@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 import { CardsUserContext } from '../../Context/CardsUserProvider'
 import { Buttons } from '../../UI/button/Buttons'
 import { MyInput } from '../../UI/input/MyInput'
-import classesCreate from '../styles/classesCreate'
+import classesCreate from '../../styles/classesCreate'
 
 export function CreateGenre () {
   const {addGenre} = useContext(CardsUserContext)

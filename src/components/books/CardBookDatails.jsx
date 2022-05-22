@@ -10,8 +10,8 @@ import { MyInput } from '../../UI/input/MyInput'
 import { MyModal } from '../../UI/modal/myModal'
 import { MySelect } from '../../UI/select/MySelect'
 import BuildCircleIcon from '@mui/icons-material/BuildCircle';
-import classIcons from '../styles/classIcons'
-import classesCardBook from '../styles/classesCardBook'
+import classIcons from '../../styles/classIcons'
+import classesCardBook from '../../styles/classesCardBook'
 export function CardBookDatails () {
   const {books, user, genres, editCardUser} = useContext(CardsUserContext)
   const [newFieldBook, setNewFieldBook] = useState({
@@ -32,7 +32,7 @@ export function CardBookDatails () {
   const updateBook= async(userId)=>{
     const id = userId.id
     editCardUser(id, 'Books', newFieldBook)
-   
+    route.push('/user/home')
   }
   const titleHandler = (value) => {
     setNewFieldBook({...newFieldBook, title: value})

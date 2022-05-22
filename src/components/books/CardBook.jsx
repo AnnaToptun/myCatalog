@@ -5,8 +5,8 @@ import { CardsUserContext } from '../../Context/CardsUserProvider'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-import classIcons from '../styles/classIcons'
-import classesCardBook from '../styles/classesCardBook'
+import classIcons from '../../styles/classIcons'
+import classesCardBook from '../../styles/classesCardBook'
 
 
 

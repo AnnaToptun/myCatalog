@@ -6,7 +6,7 @@ import { signOut } from 'firebase/auth'
 import { useHistory } from 'react-router-dom';
 import TemporaryDrawer from '../UI/drawer/TemporaryDrawer';
 import logo from '../img/log.png'
-import './styles/Header.css'
+import '../styles/Header.css'
 
 export function Header ({children}) {
     const {user, auth, userCurrent} = useContext(CardsUserContext)

@@ -7,7 +7,7 @@ import { Buttons } from '../UI/button/Buttons';
 import { CheckBox } from '../UI/checkbox/CheckBox';
 import { MyInput } from '../UI/input/MyInput';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import classesPages from './styles/classesPages';
+import classesPages from '../styles/classesPages';
 import classes from '../UI/checkbox/classes';
 
 export function Login() {

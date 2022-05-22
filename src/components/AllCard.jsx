@@ -1,9 +1,10 @@
-import { Box, Container } from '@mui/material'
+import { Box, Container, Skeleton } from '@mui/material'
 import { React, useContext} from 'react'
 import { CardsUserContext } from '../Context/CardsUserProvider'
 import { CardBook } from './books/CardBook'
 import { SortedBook } from './SortedBook';
-import classesPages from './styles/classesPages';
+import classesPages from '../styles/classesPages';
+import { Loading } from '../UI/loading/Loading';
 
 export function AllCard ({addBook, delBookUser  }) {
     const {booksSort} = useContext(CardsUserContext)
@@ -14,7 +15,8 @@ export function AllCard ({addBook, delBookUser  }) {
             <SortedBook/>
             <Box style={classesPages.pageAllCard} >
                 {
-                    booksSort.map((card)=>(
+                (booksSort.length)
+                    ? booksSort.map((card)=>(
                         <Box key={card.id}  my={4}>
                             <CardBook 
                                 delBookUser={delBookUser}
@@ -23,6 +25,7 @@ export function AllCard ({addBook, delBookUser  }) {
                             />
                         </Box>
                     ))
+                    : <Loading/>
                 }   
             </Box>
         </Container>

@@ -3,7 +3,7 @@ import { useTheme } from '@mui/material/styles';
 import {Tabs, Tab, AppBar, Box} from '@mui/material';
 import { CreateCard } from './CreateCard';
 import { CreateGenre } from './CreateGenre';
-import classesCreate from '../styles/classesCreate';
+import classesCreate from '../../styles/classesCreate';
 
 interface TabPanelProps {
   children?: React.ReactNode;

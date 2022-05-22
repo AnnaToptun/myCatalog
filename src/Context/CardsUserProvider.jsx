@@ -22,8 +22,9 @@ export const CardsUserProvider = ({ children }) => {
   const genresCollectionRef = collection(db, 'Genre')
   const getBookCards = async () => {
     const dataBooks = await getDocs(booksCollectionRef)
-    setBooks(dataBooks.docs.map(doc => ({ ...doc.data(), id: doc.id })))
-    setBooksSort(dataBooks.docs.map(doc => ({ ...doc.data(), id: doc.id })))
+    const allBook = dataBooks.docs.map(doc => ({ ...doc.data(), id: doc.id }))
+    setBooks(allBook)
+    setBooksSort(allBook)
   }
 
   const getUsers = async (email) => {
@@ -66,11 +67,11 @@ export const CardsUserProvider = ({ children }) => {
     const newField = { userBooks: [...userBooks, newBook] }
     await updateDoc(userDoc, newField)
   }
-
   const editCardUser = async (id, collection, updateField) => {
     const userDoc = doc(db, collection, id)
     const newField = { ...updateField }
     await updateDoc(userDoc, newField)
+    window.location.reload()
   }
 
   const deleteBookUser = async (id, userBooks, delBooks) => {
@@ -107,7 +108,7 @@ export const CardsUserProvider = ({ children }) => {
     getBookCards()
     getGenres()
   }, [])
-
+  console.log(commentIdBooks)
   return (
     <CardsUserContext.Provider
       value={{
@@ -134,7 +135,7 @@ export const CardsUserProvider = ({ children }) => {
         booksCollectionRef,
         booksSort, 
         setBooksSort,
-        editCardUser
+        editCardUser,
       }}
     >
       {children}

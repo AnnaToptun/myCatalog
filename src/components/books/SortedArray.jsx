@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@material-ui/core';
 import { CardBook } from './CardBook';
-import classesPages from '../styles/classesPages';
+import classesPages from '../../styles/classesPages';
 
 export function SortedArray({ books, deleteBookUser, includeBook }) {
   return (

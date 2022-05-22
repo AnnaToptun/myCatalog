@@ -5,7 +5,7 @@ import { CardsUserContext } from '../../Context/CardsUserProvider'
 import { Buttons } from '../../UI/button/Buttons'
 import { MyInput } from '../../UI/input/MyInput'
 import { MySelect } from '../../UI/select/MySelect' 
-import classesCreate from '../styles/classesCreate'
+import classesCreate from '../../styles/classesCreate'
 
 export function CreateCard () {
   const { addCard, genres} = useContext(CardsUserContext)

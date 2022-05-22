@@ -5,26 +5,34 @@ import { Buttons } from '../../UI/button/Buttons'
 import { Comments } from './Comments'
 
 export function FormComment () {
-  const {commentIdBooks, setCommentIdBooks} = useContext(CardsUserContext)
-  const [comment, setComment] = useState( '')
-   const newComment = (valueComment)=>{
-      setComment(valueComment)
+  const {commentIdBooks, setCommentIdBooks, userCurrent} = useContext(CardsUserContext)
+  const [comment, setComment] = useState({
+    id: Date.now(),
+    userId: userCurrent.id,
+    userName: userCurrent.fistName,
+    userLastName: userCurrent.lastName,
+    userImg: userCurrent.img,
+    comment: ''
+  })
+   const newComment = (value)=>{
+      setComment({...comment, comment: value})
   }
-  const createComment = ()=>{
-    setCommentIdBooks([...commentIdBooks,{id: Date.now(), comment: comment} ])
-    setComment('')
+  const createCommentBook = (card)=>{
+    setCommentIdBooks([...commentIdBooks, comment])
+    setComment({...comment, comment: ''})
+
   }
   return (
     <Container>
       <span>Create Title</span>
       <FormGroup>
         <TextField
-         value={comment}
+         value={comment.comment}
          type='text'
          placeholder='text comment'
          onChange={(e)=>newComment(e.target.value)}
         />
-        <Buttons onClick={createComment}>Create Commnet</Buttons>
+        <Buttons onClick={createCommentBook}>Create Comment</Buttons>
       </FormGroup>
     </Container>
   )

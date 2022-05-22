@@ -9,16 +9,17 @@ import { Buttons } from '../UI/button/Buttons'
 import BuildCircleIcon from '@mui/icons-material/BuildCircle'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-import profile from './styles/Profile'
-import classIcons from './styles/classIcons'
+import profile from '../styles/Profile'
+import classIcons from '../styles/classIcons'
+import { Loading } from '../UI/loading/Loading'
 
 export function Profile () {
   const {userCurrent, setBookId,editCardUser, users}= useContext(CardsUserContext)
   const [newFieldUser, setNewFieldUser] = useState({
-    fistName: "Ім'я",
-    lastName: 'Прізвище',
-    birthday: '1965-10-25',
-    img: 'Аватар',
+    fistName: "",
+    lastName: '',
+    birthday: '',
+    img: '',
   })
   const params = useParams()
   const route = useHistory()
@@ -29,7 +30,7 @@ export function Profile () {
     const id = userId.id
     console.log(id)
     editCardUser(id, 'Users', newFieldUser)
-
+    route.push('/user/home')
   }
   const detailsCard =(card)=>{
     route.push(`/book/${card.id}`)
@@ -54,54 +55,59 @@ export function Profile () {
   return (
     <Container>
       {
-        findUserId.map(userId =>{
+        (findUserId.length)
+        ? findUserId.map(userId =>{
           
           return (
             <Box key={userId.id} style={profile.profile}>
+              
               <Box>
                 {
                   (userId.img ==='')
                   ?<AccountCircleIcon style={classIcons.iconsAccountProfile}/>
                   :<img style={profile.profileImg} src={userId.img} alt=''/>
                 }
-                
               </Box>
               <Box style={profile.profileDitails}>
-                <span style={profile.profileName}>{userId.fistName} {userId.lastName}</span>
-                {
-                  (userCurrent.id===userId.id)
-                  ?
-                  <MyModal title={<BuildCircleIcon style={classIcons.iconsEditProfile}/>}>
-                    <MyInput
-                      value={newFieldUser.fistName}
-                      type='text'
-                      onChange={(e)=>nameHandler(e.target.value)}
-                    />
-                    <MyInput
-                      value={newFieldUser.lastName}
-                      type='text'
-                      onChange={(e)=>lastNameHandler(e.target.value)}
-                    />
-                    <MyInput
-                      value={newFieldUser.birthday}
-                      type='date'
-                      onChange={(e)=>birthdayHandler(e.target.value)}
-                    />
-                    <MyInput
-                      value={newFieldUser.img}
-                      type='text'
-                      onChange={(e)=>imgHandler(e.target.value)}
-                    />
-                    <Buttons onClick={()=>updateUser(userId)}>Зберегти</Buttons>
-                  </MyModal>
-                  :''
-                }
+                <Box style={profile.profileEdit}>
+                     <span style={profile.profileName}>{userId.fistName} {userId.lastName}</span>
+                      {
+                        (userCurrent.id===userId.id)
+                        ?
+                        <MyModal title={<BuildCircleIcon style={classIcons.iconsEditProfile}/>}>
+                          <MyInput
+                            value={newFieldUser.fistName}
+                            type='text'
+                            placeholder="Ім'я"
+                            onChange={(e)=>nameHandler(e.target.value)}
+                          />
+                          <MyInput
+                            value={newFieldUser.lastName}
+                            type='text'
+                            placeholder='Прізвище'
+                            onChange={(e)=>lastNameHandler(e.target.value)}
+                          />
+                          <MyInput
+                            value={newFieldUser.birthday}
+                            type='date'
+                            placeholder='1965-10-25'
+                            onChange={(e)=>birthdayHandler(e.target.value)}
+                          />
+                          <MyInput
+                            value={newFieldUser.img}
+                            type='text'
+                            placeholder='Аватар'
+                            onChange={(e)=>imgHandler(e.target.value)}
+                          />
+                          <Buttons onClick={()=>updateUser(userId)}>Зберегти</Buttons>
+                        </MyModal>
+                        :''
+                      }
+                </Box>
+               
                 
                 <Box style={profile.profileData}>
                   <a style={profile.profileInfo} src={userId.email}>Email: {userId.email}</a>
-                  
-
-                  
                   <span style={profile.profileInfo}>Дата народження: {userId.birthday}</span>
                   <span style={profile.profileInfo}>Додані книги: </span>
                   {
@@ -119,7 +125,9 @@ export function Profile () {
               </Box>
             </Box>
           )
+          
         })
+        : <Loading/>
       }
         
     </Container>
