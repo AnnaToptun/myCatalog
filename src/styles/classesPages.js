@@ -36,6 +36,7 @@ const classesPages = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        alignItems: 'wrap-reverse',
     },
     pageRegister: {
         display: 'flex',

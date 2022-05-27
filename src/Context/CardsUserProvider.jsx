@@ -1,6 +1,6 @@
 import { React, createContext, useState, useEffect } from 'react'
 import { db, auth } from '../firebase/firebase-config'
-import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc } from 'firebase/firestore'
+import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc, query, orderBy, limit, getDoc, Firestore } from 'firebase/firestore'
 import { onAuthStateChanged } from 'firebase/auth'
 import { useHistory } from 'react-router-dom'
 export const CardsUserContext = createContext()
@@ -15,6 +15,7 @@ export const CardsUserProvider = ({ children }) => {
   const [commentIdBooks, setCommentIdBooks] = useState([])
   const [bookId, setBookId] = useState('')
   const [booksSort, setBooksSort] = useState([...books])
+  const [booksPag, setBooksPag] = useState([...books])
   
   const route = useHistory();
   const booksCollectionRef = collection(db, 'Books')
@@ -23,8 +24,10 @@ export const CardsUserProvider = ({ children }) => {
   const getBookCards = async () => {
     const dataBooks = await getDocs(booksCollectionRef)
     const allBook = dataBooks.docs.map(doc => ({ ...doc.data(), id: doc.id }))
+    
     setBooks(allBook)
     setBooksSort(allBook)
+    setBooksPag(allBook)
   }
 
   const getUsers = async (email) => {
@@ -47,8 +50,8 @@ export const CardsUserProvider = ({ children }) => {
     setGenres(dataGenres.docs.map(doc => ({ ...doc.data(), id: doc.id })))
   }
 
-  const addUser = async (card) => {
-    await addDoc(usersCollectionRef, card)
+  const addUser = async (user) => {
+    await addDoc(usersCollectionRef, user)
     getUsers()
   }
 
@@ -56,7 +59,7 @@ export const CardsUserProvider = ({ children }) => {
     await addDoc(booksCollectionRef, {...card})
     getBookCards()
   }
-
+  
   const addGenre = async (genre) => {
     await addDoc(genresCollectionRef, {...genre})
     getGenres()
@@ -67,6 +70,12 @@ export const CardsUserProvider = ({ children }) => {
     const newField = { userBooks: [...userBooks, newBook] }
     await updateDoc(userDoc, newField)
   }
+  const addBookComment = async (id, comments, newComment) => {
+    const userDoc = doc(db, 'Books', id)
+    const newField = { comments: [...comments, newComment] }
+    await updateDoc(userDoc, newField)
+
+  }
   const editCardUser = async (id, collection, updateField) => {
     const userDoc = doc(db, collection, id)
     const newField = { ...updateField }
@@ -76,7 +85,6 @@ export const CardsUserProvider = ({ children }) => {
 
   const deleteBookUser = async (id, userBooks, delBooks) => {
     const userDoc = doc(db, 'Users', id)
-    console.log(userBooks)
     const newArray = userBooks.filter(book => book.id !== delBooks);
     const newField = { userBooks: newArray }
     await updateDoc(userDoc, newField)
@@ -91,7 +99,6 @@ export const CardsUserProvider = ({ children }) => {
   const monitorAuthState = async () => {
     onAuthStateChanged(auth, user => {
       if (user) {
-        console.log(users)
         route.push('/user/home')
         setUser(true)
         getUsers(user.email)
@@ -108,33 +115,27 @@ export const CardsUserProvider = ({ children }) => {
     getBookCards()
     getGenres()
   }, [])
-  console.log(commentIdBooks)
   return (
     <CardsUserContext.Provider
       value={{
-        books,
-        user,
+        books,setBooks,
+        users,
+        user,setUser,
+        auth,
         genres,
-        setUser,
+        userCurrent,setUserCurrent,
+        userIdBooks,
+        commentIdBooks, setCommentIdBooks,
+        bookId, setBookId,
+        booksSort,setBooksSort,
+        booksPag,
+        addBookComment,
+        addUser,       
         addCard,
         addGenre,
         addBookUser,
         deleteCard,
-        userCurrent,
-        setUserCurrent,
-        addUser,
-        users,
-        auth,
-        userIdBooks,
         deleteBookUser,
-        commentIdBooks, 
-        setCommentIdBooks,
-        bookId, 
-        setBookId,
-        genresCollectionRef,
-        booksCollectionRef,
-        booksSort, 
-        setBooksSort,
         editCardUser,
       }}
     >

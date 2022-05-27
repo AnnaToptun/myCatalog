@@ -13,6 +13,7 @@ export function CreateCard () {
     title: '',
     avtor: '',
     genre: [],
+    comments: [],
     year: 2022,
     discribe: '',
     img: ''

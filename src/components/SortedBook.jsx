@@ -1,4 +1,4 @@
-import { Box, Container,  MenuItem } from '@mui/material'
+import { Box, MenuItem } from '@mui/material'
 import { React, useContext, useState } from 'react'
 import { CardsUserContext } from '../Context/CardsUserProvider'
 import { MyInput } from '../UI/input/MyInput'
@@ -7,19 +7,19 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import classes from '../UI/input/classes';
 import classesSelect from '../UI/select/classesSelect';
+import PaginationBook from './PaginationBook'
 
 
 export function SortedBook () {
-    const {books, genres, setBooksSort} = useContext(CardsUserContext)
+    const {books, genres,booksSort, setBooksSort, setBooks, booksPag} = useContext(CardsUserContext)
     const [genre, setGenre] = useState('Оберіть жанр')
     const [search, setSearch] = useState('')
     const [sort, setSort] = useState('Сортувати за...')
-    
-    
+   
     const searchHandle = (value)=>{
         setSearch(value)
         if(value.length < 2){
-            setBooksSort(books)
+            setBooks(books)
         }else{
             setBooksSort(books.filter(book => book.title.toLowerCase().includes(value)))
     
@@ -29,9 +29,10 @@ export function SortedBook () {
     const sortGenre = (value)=>{
         setGenre(value)
         if(value==='Оберіть жанр' ){
-            setBooksSort(books)
+            return(setBooks(booksPag))
         }else {
-            setBooksSort(books.filter(book => book.genre.includes(value)))
+            return (setBooksSort(booksPag.filter(book => book.genre.includes(value))),
+            setBooks(booksPag.filter(book => book.genre.includes(value))))
         }
     }
 
@@ -39,21 +40,25 @@ export function SortedBook () {
         setSort(value)
 
         if(value === 'Сортувати за...'){
-            setBooksSort(books)
+            return(setBooks(booksPag))
         } else if(value === 'Дата видавництва нові'){
-            setBooksSort([...books].sort((prev, next) =>  Number(prev.year) < Number(next.year)  &&  -1))
+            return (setBooksSort([...books].sort((prev, next) =>  Number(prev.year) < Number(next.year)  &&  -1)),
+            setBooks([...books].sort((prev, next) =>  Number(prev.year) < Number(next.year)  &&  -1)))
         }else if(value === 'Дата видавництва старі'){
-            setBooksSort([...books].sort((prev, next) => Number(next.year) < Number(prev.year)  &&  -1))
+            return (setBooksSort([...books].sort((prev, next) => Number(prev.year) > Number(next.year)  &&  -1)),
+            setBooks([...books].sort((prev, next) => Number(prev.year) > Number(next.year)  &&  -1)))
         }else if(value === 'За алфавітом А-Я'){
-            setBooksSort([...books].sort((prev, next) =>  prev.title < next.title &&  -1))
+            return (setBooksSort([...books].sort((prev, next) =>  prev.title < next.title &&  -1)),
+            setBooks([...books].sort((prev, next) =>  prev.title < next.title &&  -1)))
         } else if(value === 'За алфавітом Я-А'){
-            setBooksSort([...books].sort((prev, next) =>  prev.title > next.title &&  -1))
+            return (setBooksSort([...books].sort((prev, next) =>  prev.title > next.title &&  -1)),
+            setBooks([...books].sort((prev, next) =>  prev.title > next.title &&  -1)))
         }
        
     }
     return (
-        <Container>
-            <Box style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap'}}>
+        <Box style={classesSelect.sortedPagination}>
+            <Box style={classesSelect.sortedBox}>
                 <MyInput
                     type="text" 
                     value={search}
@@ -93,9 +98,9 @@ export function SortedBook () {
                     }
                     
                 </MySelect>
+                
             </Box>
-            
-        </Container>
-        
+            <PaginationBook booksSort={booksSort}/>
+        </Box>
     )
 }

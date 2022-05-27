@@ -1,11 +1,11 @@
 const classNewComment = {
     fieldAccount: {
-        padding: '4px',
+        padding: '20px',
         display: 'flex',
         flexDirection: 'column',
     },
     fieldComment: {
-        padding: '4px',
+        padding: '8px',
         display: 'flex',
         justifyContent: 'space-between',
     },

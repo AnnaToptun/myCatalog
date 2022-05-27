@@ -51,7 +51,7 @@ export function MainLoyout () {
               <Route path="/quest/home">
                 <AllCard/>
               </Route>
-              <Route path='/user/profile'>
+              <Route path='/user/profile/:id'>
                   <Profile/>
               </Route>
               <Redirect to="/quest/home"/>

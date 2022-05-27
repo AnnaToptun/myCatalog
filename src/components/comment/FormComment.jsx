@@ -4,23 +4,22 @@ import { CardsUserContext } from '../../Context/CardsUserProvider'
 import { Buttons } from '../../UI/button/Buttons'
 import { Comments } from './Comments'
 
-export function FormComment () {
-  const {commentIdBooks, setCommentIdBooks, userCurrent} = useContext(CardsUserContext)
+export function FormComment ({bookCurrent}) {
+  const {commentIdBooks, setCommentIdBooks, userCurrent, addBookComment} = useContext(CardsUserContext)
   const [comment, setComment] = useState({
     id: Date.now(),
     userId: userCurrent.id,
-    userName: userCurrent.fistName,
-    userLastName: userCurrent.lastName,
-    userImg: userCurrent.img,
     comment: ''
   })
    const newComment = (value)=>{
       setComment({...comment, comment: value})
   }
-  const createCommentBook = (card)=>{
+  const createCommentBook = ()=>{
+    const id = bookCurrent.id
+    const comments = bookCurrent.comments
     setCommentIdBooks([...commentIdBooks, comment])
     setComment({...comment, comment: ''})
-
+    addBookComment(id, comments, comment)
   }
   return (
     <Container>

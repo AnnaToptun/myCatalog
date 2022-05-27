@@ -15,16 +15,21 @@ import { Loading } from '../UI/loading/Loading'
 
 export function Profile () {
   const {userCurrent, setBookId,editCardUser, users}= useContext(CardsUserContext)
-  const [newFieldUser, setNewFieldUser] = useState({
-    fistName: "",
-    lastName: '',
-    birthday: '',
-    img: '',
-  })
   const params = useParams()
+  
+  const [newFieldUser, setNewFieldUser] = useState({
+    fistName: userCurrent.fistName,
+    lastName: userCurrent.lastName,
+    birthday:  userCurrent.birthday,
+    img: userCurrent.img,
+  })
   const route = useHistory()
-  const findUserId = users.filter((user =>user.id === params.id))
- 
+  const findUserId = users.filter((u) =>{
+    if(u.id === params.id){
+      return u
+    }
+  })
+  const userId = findUserId[0]
 
   const updateUser = async(userId)=>{
     const id = userId.id
@@ -50,16 +55,11 @@ export function Profile () {
     setNewFieldUser({...newFieldUser, img: value})
   }
   
-  
-  console.log(userCurrent)
   return (
     <Container>
       {
         (findUserId.length)
-        ? findUserId.map(userId =>{
-          
-          return (
-            <Box key={userId.id} style={profile.profile}>
+        ? <Box key={userId.id} style={profile.profile}>
               
               <Box>
                 {
@@ -78,7 +78,7 @@ export function Profile () {
                           <MyInput
                             value={newFieldUser.fistName}
                             type='text'
-                            placeholder="Ім'я"
+                            //placeholder="Ім'я"
                             onChange={(e)=>nameHandler(e.target.value)}
                           />
                           <MyInput
@@ -124,9 +124,9 @@ export function Profile () {
                 
               </Box>
             </Box>
-          )
+        
           
-        })
+        
         : <Loading/>
       }
         

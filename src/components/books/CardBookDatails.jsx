@@ -14,25 +14,33 @@ import classIcons from '../../styles/classIcons'
 import classesCardBook from '../../styles/classesCardBook'
 export function CardBookDatails () {
   const {books, user, genres, editCardUser} = useContext(CardsUserContext)
-  const [newFieldBook, setNewFieldBook] = useState({
-    title: '',
-    avtor: '',
-    year: 2022,
-    genre: [],
-    discribe: '',
-    img: ''
-  })
   const params = useParams()
   const route = useHistory()
-  const book = books.filter((book) => book.id === params.id)
-
+  const book = books.filter((book) => {
+    if( book.id === params.id){
+      return (
+        book
+        )
+    }}
+  )
+  const bookCurrent = book[0]
+  const [newFieldBook, setNewFieldBook] = useState({
+    title: bookCurrent.title,
+    avtor: bookCurrent.avtor,
+    year: bookCurrent.year,
+    genre: bookCurrent.genre,
+    discribe: bookCurrent.discribe,
+    img: bookCurrent.img
+  })
+  
+  console.log(bookCurrent)
   const back = ()=>{
     route.push('/home')
   }
   const updateBook= async(userId)=>{
     const id = userId.id
     editCardUser(id, 'Books', newFieldBook)
-    route.push('/user/home')
+    route.push(`/user/home/${params.id}`)
   }
   const titleHandler = (value) => {
     setNewFieldBook({...newFieldBook, title: value})
@@ -55,18 +63,15 @@ export function CardBookDatails () {
   }
   return (
     <Container p={10}>
-      
-      {
-        book.map((card)=>(
-          <Box key={card.id} my={4}>
+          <Box  my={4}>
             <Card style={classesCardBook.cardDetails}  >
-              <img src={card.img} style={classesCardBook.cardImgDetails}/>
+              <img src={bookCurrent.img} style={classesCardBook.cardImgDetails}/>
               <Box style={classesCardBook.cardInfo}>
-                <span>Назва: {card.title}</span>
-                <span>Автор: {card.avtor}</span>
-                <span>Жанр: {card.genre.join(', ')}</span>
-                <span>Рік: {card.year}</span>
-                <p>Опис: {card.discribe}</p>
+                <span>Назва: {bookCurrent.title}</span>
+                <span>Автор: {bookCurrent.avtor}</span>
+                <span>Жанр: {bookCurrent.genre.join(', ')}</span>
+                <span>Рік: {bookCurrent.year}</span>
+                <p>Опис: {bookCurrent.discribe}</p>
                 <Box style={classesCardBook.cardButton}>
                   <Buttons onClick={back}>
                     Назад
@@ -116,7 +121,7 @@ export function CardBookDatails () {
                         type='text'
                         onChange={(e)=>imgHandler(e.target.value)}
                       />
-                      <Buttons onClick={()=>updateBook(card)}>Зберегти</Buttons>
+                      <Buttons onClick={()=>updateBook(bookCurrent)}>Зберегти</Buttons>
                     </MyModal>
                     :''
                   }
@@ -126,15 +131,15 @@ export function CardBookDatails () {
             </Card> 
             {
               (user)
-              ?<FormComment/>
+              ?<FormComment bookCurrent={bookCurrent}/>
               : <p>Незареєстровані користувачі не можуть залишати коментарі</p>
             } 
             
-            <Comments/>
+            <Comments bookCurrent={bookCurrent}/>
           </Box>
           
-        ))
-      }
+        
+      
      
     </Container>
     

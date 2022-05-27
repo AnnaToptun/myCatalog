@@ -1,4 +1,4 @@
-import { Checkbox, Container, FormGroup } from '@mui/material';
+import { Checkbox, Container, FormGroup, FormHelperText } from '@mui/material';
 import { Box } from '@mui/system';
 import { React, useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -9,14 +9,15 @@ import { MyInput } from '../UI/input/MyInput';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import classesPages from '../styles/classesPages';
 import classes from '../UI/checkbox/classes';
+import classesButton from '../UI/button/classes';
 
 export function Login() {
   const { auth} = useContext(CardsUserContext);
 
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
-  const [errorLogin, setErrorLogin] = useState(true);
-  const [errorPass, setErrorPass] = useState(true);
+  const [errorLogin, setErrorLogin] = useState(false);
+  const [errorPass, setErrorPass] = useState(false);
   const [passCheckbox, setPassCheckbox] = useState(false);
   const [passOpen, setPassOpen] = useState('password');
   const route = useHistory();
@@ -56,6 +57,8 @@ export function Login() {
   const passSimpleReg = /(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]{6,}/g;
   const isEmailValid = () => emailReg.test(login);
   const isPassValid = () => passSimpleReg.test(password);
+  const disabledButton = (errorPass || errorLogin)
+ 
   return (
     <Container>
       <FormGroup style={classesPages.pageLoginRegister}>
@@ -86,9 +89,25 @@ export function Login() {
           }
           label="Show password"
         />
+         <FormHelperText id="component-helper-text">
+            {(errorPass && errorLogin)? "Некорректно введений логін чи пароль": ''}
+          </FormHelperText>
         <Box style={classesPages.pageLoginButtons}>
-          <Buttons onClick={loginEmailPassword}>Log in</Buttons>
-          <Buttons onClick={signIn}>Sign in</Buttons>
+          <Buttons onClick={signIn }>Реєстрація</Buttons>
+          <Buttons 
+            disabled={(disabledButton)
+              ? true
+              : false
+            }
+            style={
+              (disabledButton)
+              ? classesButton.myButtonDisable
+              : classesButton.myButton
+            }
+            onClick={loginEmailPassword}
+          >
+            Вхід
+          </Buttons>
         </Box>
       </FormGroup>
     </Container>

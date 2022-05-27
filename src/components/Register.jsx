@@ -1,4 +1,4 @@
-import { Checkbox } from '@material-ui/core';
+import { Checkbox, FormControl, FormHelperText } from '@material-ui/core';
 import { Box, Container, FormGroup } from '@mui/material';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { React, useContext, useState } from 'react';
@@ -9,6 +9,8 @@ import { CheckBox } from '../UI/checkbox/CheckBox';
 import { MyInput } from '../UI/input/MyInput';
 import classes from '../UI/checkbox/classes';
 import classesPages from '../styles/classesPages';
+import classesSelect from '../UI/select/classesSelect';
+import classesButton from '../UI/button/classes';
 export function Register() {
   const { auth, addUser,  setUser } = useContext(CardsUserContext);
   const emailReg =
@@ -18,14 +20,14 @@ export function Register() {
   const passStrongReg = /(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{8,}/g;
   const route = useHistory();
 
-  const [errorEmail, setErrorEmail] = useState(true);
-  const [errorName, setErrorName] = useState(true);
-  const [errorLastName, setErrorLastName] = useState(true);
-  const [errorDate, setErrorDate] = useState(true);
-  const [errorPass, setErrorPass] = useState(true);
+  const [errorEmail, setErrorEmail] = useState(false);
+  const [errorName, setErrorName] = useState(false);
+  const [errorLastName, setErrorLastName] = useState(false);
+  const [errorDate, setErrorDate] = useState(false);
+  const [errorPass, setErrorPass] = useState(false);
   const [passCheckbox, setPassCheckbox] = useState(false);
   const [passOpen, setPassOpen] = useState('password');
-  const [errorConfirmPass, setErrorConfirmPass] = useState(true);
+  const [errorConfirmPass, setErrorConfirmPass] = useState(false);
   const [accept, setAccept] = useState(false);
   const [fieldsForm, setFildsForm] = useState({
     fistName: '',
@@ -92,7 +94,13 @@ export function Register() {
   const isPassAvarageValid = () => passAvarageReg.test(fieldsForm.password);
   const isPassStrongValid = () => passStrongReg.test(fieldsForm.password);
 
-  
+  const disabledButton = (!isEmailValid ||
+    !isPassStrongValid ||
+    errorConfirmPass ||
+    errorDate ||
+    errorName ||
+    errorLastName ||
+    !accept)
   const createAccount = async () => {
     const loginEmail = fieldsForm.email
     const loginPassword = fieldsForm.password
@@ -105,87 +113,125 @@ export function Register() {
       console.log(error)
     }
   }
+  const statusPass =() =>{
+    if (!isPassValid()) {
+        return "Simple password"
+    } else if (!isPassAvarageValid()){
+        return "Avarage password"
+    } else if(!isPassStrongValid()){ 
+        return "Strong password"
+    }else{
+        return "Excallent"
+    }
+}
   return (
     <Container  style={classesPages.pageLoginRegister}>
-      <FormGroup>
+      
         <Box style={(window.innerWidth<500)
           ?classesPages.pageAsideRegisterSmall
           :classesPages.pageAsideRegister
           }>
-          <MyInput
-            value={fieldsForm.fistName}
-            error={errorName}
-            required={true}
-            type="text"
-            placeholder="First Name"
-            label="First Name"
-            //helpertext={errorName && 'Inccorect name'}
-            onChange={event => firstNameHandler(event.target.value)}
-          />
-          <MyInput
-            value={fieldsForm.lastName}
-            error={errorLastName}
-            required={true}
-            type="text"
-            placeholder="Last Name"
-            label="LastName"
-            //helpertext={errorLastName && 'Inccorect lastname'}
-            onChange={event => lastNameHandler(event.target.value)}
-          />
+           <FormControl variant="standard">
+              <MyInput
+                value={fieldsForm.fistName}
+                error={errorName}
+                required={true}
+                type="text"
+                placeholder="First Name"
+                label="First Name"
+                onChange={event => firstNameHandler(event.target.value)}
+              />
+              <FormHelperText id="component-helper-text">
+                {errorName&&'Inccorect name'}
+              </FormHelperText>
+           </FormControl>
+         
+            <FormControl variant="standard">
+              <MyInput
+                value={fieldsForm.lastName}
+                error={errorLastName}
+                required={true}
+                type="text"
+                placeholder="Last Name"
+                label="LastName"
+                onChange={event => lastNameHandler(event.target.value)}
+              />
+              <FormHelperText id="component-helper-text">
+                {errorLastName && 'Inccorect lastname'}
+              </FormHelperText>
+            </FormControl>
         </Box>
         <Box style={(window.innerWidth<500)
           ?classesPages.pageAsideRegisterSmall
           :classesPages.pageAsideRegister
           }>
-          <MyInput
-            value={fieldsForm.birthday}
-            error={errorDate}
-            required={true}
-            type="date"
-            label="Date of Birth"
-            //helpertext={errorDate && 'You can`t registrate'}
-            onChange={event => dateHandler(event.target.value)}
-          />
-          <MyInput
-            required
-            value={fieldsForm.email}
-            error={errorEmail}
-            type="text"
-            placeholder="Email"
-            label="Email"
-            //helpertext={errorEmail && "Incorrect email"}
-            onChange={event => emailHandler(event.target.value)}
-          />
+          <FormControl variant="standard">
+            <MyInput
+              value={fieldsForm.birthday}
+              error={errorDate}
+              required={true}
+              type="date"
+              label="Date of Birth"
+              onChange={event => dateHandler(event.target.value)}
+            />
+            <FormHelperText id="component-helper-text">
+              {errorDate && 'You can`t registrate'}
+            </FormHelperText>
+          </FormControl>
+          <FormControl variant="standard">
+            <MyInput
+              required
+              value={fieldsForm.email}
+              error={errorEmail}
+              type="text"
+              placeholder="Email"
+              label="Email"
+              onChange={event => emailHandler(event.target.value)}
+            />
+            <FormHelperText id="component-helper-text">
+              {errorEmail && "Incorrect email"}
+            </FormHelperText>
+          </FormControl>
         </Box>
 
         <Box style={(window.innerWidth<500)
           ?classesPages.pageAsideRegisterSmall
           :classesPages.pageAsideRegister
           }>
-          <MyInput
-            value={fieldsForm.password}
-            required
-            error={errorPass}
-            type={passOpen}
-            placeholder="Password"
-            label="Password"
-            //helpertext={statusPass()}
-            onChange={event => passHandler(event.target.value)}
-          />
-          <MyInput
-            value={fieldsForm.passwordComf}
-            error={errorConfirmPass}
-            required
-            type={passOpen}
-            placeholder="Confirm password"
-            label="Confirm password"
-            //helpertext={errorConfirmPass && "Passwords don't match"}
-            onChange={event => passConfirmHandler(event.target.value)}
-          />
+          <FormControl variant="standard">
+            <MyInput
+              value={fieldsForm.password}
+              required
+              error={errorPass}
+              type={passOpen}
+              placeholder='Password'
+              label="Password"
+              onChange={event => passHandler(event.target.value)}
+            />
+            <FormHelperText id="component-helper-text">
+              {statusPass()}
+            </FormHelperText>
+          </FormControl>
+          <FormControl variant="standard">
+            <MyInput
+              value={fieldsForm.passwordComf}
+              error={errorConfirmPass}
+              required
+              type={passOpen}
+              placeholder="Confirm password"
+              label="Confirm password"
+              onChange={event => passConfirmHandler(event.target.value)}
+            />
+            <FormHelperText id="component-helper-text">
+            {errorConfirmPass && "Passwords don't match"}
+          </FormHelperText>
+          </FormControl>
+          
         </Box>
-        <Box style={(window.innerWidth<500)
-          ?classesPages.pageAsideRegisterSmall
-          :classesPages.pageAsideRegister
+        <Box  style={
+            (window.innerWidth<500)
+              ?classesPages.pageAsideRegisterSmall
+              :classesPages.pageAsideRegister
           }>
           <CheckBox
             control={
@@ -212,30 +258,27 @@ export function Register() {
           />
         </Box>
         <Box style={(window.innerWidth<500)
-          ?classesPages.pageAsideRegisterSmall
+          ?classesPages.pageLoginButtons
           :classesPages.pageAsideRegister
           }>
-          <Buttons onClick={() => route.push('/quest/login')}>Login</Buttons>
+          <Buttons onClick={() => route.push('/quest/login')}>Вхід</Buttons>
           <Buttons
             disabled={
-              !(
-                !isEmailValid ||
-                !isPassStrongValid ||
-                errorConfirmPass ||
-                errorDate ||
-                errorName ||
-                errorLastName ||
-                !accept
-              )
+              !disabledButton
                 ? false
                 : true
             }
+            style={
+              (disabledButton)
+              ? classesButton.myButtonDisable
+              : classesButton.myButton
+            }
             onClick={createAccount}
           >
-            Registration
+            Реєстрація
           </Buttons>
         </Box>
-      </FormGroup>
+
     </Container>
   );
 }

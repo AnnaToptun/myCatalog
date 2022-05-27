@@ -30,7 +30,7 @@ function TabPanel(props: TabPanelProps) {
 }
 
 export function AsideUser() {
-  const {  genres, deleteBookUser, userCurrent, addBookUser, userIdBooks } =
+  const {  genres, deleteBookUser, userCurrent, addBookUser, userIdBooks, booksPag, bookSort } =
     useContext(CardsUserContext);
   const [value, setValue] = React.useState(0)
   const [sortBooks, setSortBooks] = useState([''])
@@ -76,15 +76,15 @@ export function AsideUser() {
       >
         <Tab 
           style={classesPages.pageAsideTab}
-          label="Всі книги" />
+          label={`Всі книги (${booksPag.length})`}/>
         <Tab 
           style={classesPages.pageAsideTab}
-          label="Мої книги" />
+          label={`Мої книги (${userIdBooks.length})`} />
         {genres.map(g => (
           <Tab  
             key={g.id} 
             style={classesPages.pageAsideTab}
-            label={g.genre} 
+            label={g.genre } 
             onClick={() => sortBooksGenre(g.genre)} />
         ))}
       </Tabs>

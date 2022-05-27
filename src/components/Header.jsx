@@ -23,11 +23,7 @@ export function Header ({children}) {
                         ?'header-adaptive'
                         :'header'
                     }>
-                    <Link to={
-                        (user)
-                        ? '/user/home'
-                        : '/quest/login'
-                    }>
+                    <Link to={(user)? '/user/home': '/quest/home'}>
                         <img  style={{width: '250px'}}src={logo} alt="" />
                     </Link>
                     {
