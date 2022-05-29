@@ -4,14 +4,21 @@ const classesPages = {
         flexWrap: 'wrap',
         justifyContent: 'space-start'
     },
+    pageAllCardBox: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     pageAsideRegister: {
         display: 'flex',
         justifyContent: 'flex-start',
     },
     pageAsideRegisterSmall: {
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'flex-start',
-        flexWrap: 'wrap',
+        alignItems: 'center',
     },
     pageAsideTabs: {
         width: '250px',
@@ -31,6 +38,15 @@ const classesPages = {
         justifyContent: 'center',
         alignItems: 'center',
         padding: '20% 0'
+    },
+    pageAvtors: {
+        height: '400px',
+        width: '250px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAling: 'center'
     },
     pageLoginButtons: {
         display: 'flex',

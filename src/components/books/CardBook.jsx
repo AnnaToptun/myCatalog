@@ -11,19 +11,29 @@ import classesCardBook from '../../styles/classesCardBook'
 
 
 export function CardBook ({card, addBook, delBookUser  }) {
-  const { user, userIdBooks, setBookId } = useContext(CardsUserContext)
+  const { user, userIdBooks, setBookId, avtors, addBooksAvtor } = useContext(CardsUserContext)
  const [mouse, setMouse]=useState(false)
   const bookid = userIdBooks.map(b => b.id);
  
   const route = useHistory()
   const detailsCard =()=>{
     route.push(`/book/${card.id}`)
-    console.log(card.id)
     setBookId(card.id)
   }
   const changeStyle = ()=>{
     (mouse)? setMouse(false):setMouse(true)
   }
+  const avtorId = avtors.filter(avtor =>{
+    if(avtor.avtor === card.avtor){
+      return (avtor)
+    }
+    
+  })
+  const currentAvtor = avtorId[0]
+  const detailsAvtor = ()=>{
+    route.push(`/avtor/${currentAvtor.id}`)
+  }
+ 
   return (
     <Card style={
         (mouse)
@@ -36,9 +46,11 @@ export function CardBook ({card, addBook, delBookUser  }) {
       <img src={card.img} style={classesCardBook.cardImg} alt=''/>
       <Box style={classesCardBook.cardInfo}>
         <span style={classesCardBook.cardTitleAvtor}>Назва: {card.title}</span>
-        <span style={classesCardBook.cardTitleAvtor}>Автор: {card.avtor}</span>
-        <span style={classesCardBook.cardTitleAvtor}>Жанр: {card.genre.join(', ')}</span>
-        <span>Рік: {card.year}</span>
+        <span>Автор:
+          <a style={classesCardBook.cardAvtor} onClick={detailsAvtor}> {card.avtor} </a> 
+         
+        </span>
+       
         {
           (user)
           ?

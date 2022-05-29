@@ -4,6 +4,12 @@ const profile = {
         justifyContent: 'space-around',
         alignItems: 'flex-start',
     },
+    profileSmall: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+    },
     profileDitails: {
         display: 'flex',
         flexDirection: 'column',

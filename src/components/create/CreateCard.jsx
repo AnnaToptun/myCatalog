@@ -6,9 +6,10 @@ import { Buttons } from '../../UI/button/Buttons'
 import { MyInput } from '../../UI/input/MyInput'
 import { MySelect } from '../../UI/select/MySelect' 
 import classesCreate from '../../styles/classesCreate'
+import classes from '../../UI/input/classes'
 
 export function CreateCard () {
-  const { addCard, genres} = useContext(CardsUserContext)
+  const { addCard, genres, avtors} = useContext(CardsUserContext)
   const [cardBook, setCardBook] = useState({
     title: '',
     avtor: '',
@@ -22,8 +23,9 @@ export function CreateCard () {
   const titleHandle = (value)=>{
     setCardBook({...cardBook, title: value})
   }
-  const avtorHandle = (value)=>{
-    setCardBook({...cardBook, avtor: value})
+  const avtorHandle = (event)=>{
+    
+    setCardBook({...cardBook, avtor: event.target.value})
   }
   const yearHandle = (value)=>{
     setCardBook({...cardBook, year: value})
@@ -41,6 +43,7 @@ export function CreateCard () {
   const handleChange = (e) => {
     setCardBook({...cardBook, genre: e.target.value})
   }
+  
   return (
     <Container  style={classesCreate.card}>
       <FormGroup>
@@ -52,13 +55,19 @@ export function CreateCard () {
             onChange={(e)=>titleHandle(e.target.value)}
             label='Title'
           />
-          <MyInput
-            type='text'
+          <MySelect 
             value={cardBook.avtor}
-            placeholder='Автор'
-            onChange={(e)=>avtorHandle(e.target.value)}
-            label='Автор'
-          />
+            onChange={avtorHandle}
+            sstule
+            >
+
+              {
+                avtors.map((avtor)=>(
+                  <MenuItem key={avtor.id} value={avtor.avtor}>{avtor.avtor}</MenuItem>
+                ))
+              }
+              
+          </MySelect>
         </Box>
         <Box style={classesCreate.cardForm}>
           
@@ -86,22 +95,24 @@ export function CreateCard () {
           />
         </Box>
  
-        <Box style={classesCreate.cardForm}>
-          <MyInput
-            type='text'
-            value={cardBook.discribe}
-            placeholder='Опис'
-            onChange={(e)=>discribeHandle(e.target.value)}
-            label='Опис'
-          />
-          <MyInput
-            type='text'
-            value={cardBook.img}
-            placeholder='URL-посилання на картинку'
-            onChange={(e)=>imgHandle(e.target.value)}
-            label='URL-посилання на картинку'
-          />
-        </Box>
+        
+        <MyInput
+          type='text'
+          value={cardBook.discribe}
+          placeholder='Опис'
+          onChange={(e)=>discribeHandle(e.target.value)}
+          label='Опис'
+          style={classes.myInputDiscribe}
+        />
+        <MyInput
+          type='text'
+          value={cardBook.img}
+          placeholder='URL-посилання на картинку'
+          onChange={(e)=>imgHandle(e.target.value)}
+          label='URL-посилання на картинку'
+          style={classes.myInputImg}
+        />
+        
         <Buttons
           onClick={createCard}
         >

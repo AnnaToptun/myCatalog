@@ -40,6 +40,7 @@ export function Header ({children}) {
                                         <li><Link to={`/user/profile/${userCurrent.id}`}>Профіль </Link></li>
                                         <li><Link to="/user/home">Мої книги</Link></li>
                                         <li><Link to="/user/create">Створити книгу/жанр</Link></li>
+                                        <li><Link to="/user/addAvtor">Додати автора</Link></li>
                                         <li><Link to="/quest/login" onClick={logOut}>Вихід</Link></li>
                                     </ul>
                                 </TemporaryDrawer>

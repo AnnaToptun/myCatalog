@@ -46,7 +46,10 @@ export function CreateCardGenre() {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-
+  const cardTabs = {
+    background: '#ae5e0b',
+    color: '#ffffff'
+  }
  
 
   return (
@@ -55,7 +58,7 @@ export function CreateCardGenre() {
         <Tabs
           value={value}
           onChange={handleChange}
-          style={classesCreate.cardTabs}
+          style={cardTabs}
           textColor="inherit"
           variant="fullWidth"
           aria-label="full width tabs example"

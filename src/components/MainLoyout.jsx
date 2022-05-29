@@ -12,6 +12,8 @@ import { Register } from './Register'
 import { CardsUserContext } from '../Context/CardsUserProvider'
 
 import { Profile } from './Profile'
+import { CardAvtors } from './avtors/CardAvtors'
+import { AddAvtor } from './create/AddAvtor'
 export function MainLoyout () {
   const {user} = useContext(CardsUserContext)
   return (
@@ -31,9 +33,14 @@ export function MainLoyout () {
                 <Route path="/user/create">
                   <CreateCardGenre/>
                 </Route>
-               
+                <Route path="/user/addAvtor">
+                  <AddAvtor/>
+                </Route>
                 <Route path='/user/profile/:id'>
                   <Profile/>
+                </Route>
+                <Route path='/avtor/:id'>
+                  <CardAvtors/>
                 </Route>
                 <Redirect to='/user/home'/>
               </Switch>
@@ -54,6 +61,9 @@ export function MainLoyout () {
               <Route path='/user/profile/:id'>
                   <Profile/>
               </Route>
+              <Route path='/avtor/:id'>
+                  <CardAvtors/>
+                </Route>
               <Redirect to="/quest/home"/>
             </Switch>
           }

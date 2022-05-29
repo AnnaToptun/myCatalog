@@ -15,7 +15,8 @@ const classesCreate = {
         width: '100%'
     },
     cardTabs: {
-        background: '#ae5e0b'
+        background: '#ae5e0b',
+        color: '#ffffff'
     },
     genreForm: {
         display: 'flex',

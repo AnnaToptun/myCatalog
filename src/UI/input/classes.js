@@ -13,12 +13,22 @@ const classes = {
         padding: '8px',
         width: '200px'
     },
-    myInputError: {
-        border: '1px solid #e42f0b',
-        color: '#e42f0b',
+    myInputDiscribe: {
+        border: '1px solid #ae5e0b',
+        color: '#ae5e0b',
         borderRadius: '4px',
         padding: '8px',
-        width: '200px'
-    }
+        width: '100%',
+        height: '40px'
+    },
+    myInputImg: {
+        border: '1px solid #ae5e0b',
+        color: '#ae5e0b',
+        borderRadius: '4px',
+        padding: '8px',
+        width: '100%',
+        height: '40px'
+    },
+
 }
 export default classes

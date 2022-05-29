@@ -7,11 +7,10 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import classes from '../UI/input/classes';
 import classesSelect from '../UI/select/classesSelect';
-import PaginationBook from './PaginationBook'
 
 
 export function SortedBook () {
-    const {books, genres,booksSort, setBooksSort, setBooks, booksPag} = useContext(CardsUserContext)
+    const {books, genres,booksSort, setBooksSort, setBooks, booksPag, setBooksPag} = useContext(CardsUserContext)
     const [genre, setGenre] = useState('Оберіть жанр')
     const [search, setSearch] = useState('')
     const [sort, setSort] = useState('Сортувати за...')
@@ -19,7 +18,9 @@ export function SortedBook () {
     const searchHandle = (value)=>{
         setSearch(value)
         if(value.length < 2){
-            setBooks(books)
+            setBooksPag({...booksPag, 
+                order: 'title',
+                sort:'asc'})
         }else{
             setBooksSort(books.filter(book => book.title.toLowerCase().includes(value)))
     
@@ -29,10 +30,11 @@ export function SortedBook () {
     const sortGenre = (value)=>{
         setGenre(value)
         if(value==='Оберіть жанр' ){
-            return(setBooks(booksPag))
+            setBooksPag({...booksPag, 
+                order: 'title',
+                sort:'asc'})
         }else {
-            return (setBooksSort(booksPag.filter(book => book.genre.includes(value))),
-            setBooks(booksPag.filter(book => book.genre.includes(value))))
+            return setBooksSort(books.filter(book => book.genre.includes(value)))
         }
     }
 
@@ -40,19 +42,25 @@ export function SortedBook () {
         setSort(value)
 
         if(value === 'Сортувати за...'){
-            return(setBooks(booksPag))
-        } else if(value === 'Дата видавництва нові'){
-            return (setBooksSort([...books].sort((prev, next) =>  Number(prev.year) < Number(next.year)  &&  -1)),
-            setBooks([...books].sort((prev, next) =>  Number(prev.year) < Number(next.year)  &&  -1)))
-        }else if(value === 'Дата видавництва старі'){
-            return (setBooksSort([...books].sort((prev, next) => Number(prev.year) > Number(next.year)  &&  -1)),
-            setBooks([...books].sort((prev, next) => Number(prev.year) > Number(next.year)  &&  -1)))
-        }else if(value === 'За алфавітом А-Я'){
-            return (setBooksSort([...books].sort((prev, next) =>  prev.title < next.title &&  -1)),
-            setBooks([...books].sort((prev, next) =>  prev.title < next.title &&  -1)))
-        } else if(value === 'За алфавітом Я-А'){
-            return (setBooksSort([...books].sort((prev, next) =>  prev.title > next.title &&  -1)),
-            setBooks([...books].sort((prev, next) =>  prev.title > next.title &&  -1)))
+            setBooksPag({...booksPag, 
+                order: 'title',
+                sort:'asc'})
+        } else if(value === 'За автором А-Я'){
+            setBooksPag({...booksPag, 
+                order: 'avtor',
+                sort:'desc'})
+        }else if(value === 'За автором Я-А'){
+            setBooksPag({...booksPag, 
+                order: 'avtor',
+                sort:'asc'})
+        }else if(value === 'За назвою А-Я'){
+            setBooksPag({...booksPag, 
+                order: 'title',
+                sort:'asc'})
+        } else if(value === 'За назвою Я-А'){
+            setBooksPag({...booksPag, 
+                order: 'title',
+                sort:'desc'})
         }
        
     }
@@ -77,10 +85,10 @@ export function SortedBook () {
                     onChange={(e)=>sorted(e.target.value)}
                     >
                         <MenuItem  value='Сортувати за...'>Сортувати за...</MenuItem>
-                        <MenuItem  value='Дата видавництва нові'>Дата видавництва <ArrowDownwardIcon/></MenuItem>
-                        <MenuItem  value='Дата видавництва старі'>Дата видавництв <ArrowUpwardIcon/></MenuItem>
-                        <MenuItem  value='За алфавітом А-Я'>За алфавітом А-Я<ArrowDownwardIcon/></MenuItem>
-                        <MenuItem  value='За алфавітом Я-А'>За алфавітом Я-А<ArrowUpwardIcon/></MenuItem>                    
+                        <MenuItem  value='За автором А-Я'>За автором <ArrowDownwardIcon/></MenuItem>
+                        <MenuItem  value='За автором Я-А'>За автором <ArrowUpwardIcon/></MenuItem>
+                        <MenuItem  value='За назвою А-Я'>За назвою А-Я<ArrowDownwardIcon/></MenuItem>
+                        <MenuItem  value='За назвою Я-А'>За назвою Я-А<ArrowUpwardIcon/></MenuItem>                    
                 </MySelect>
                 <MySelect 
                     value={genre}
@@ -100,7 +108,8 @@ export function SortedBook () {
                 </MySelect>
                 
             </Box>
-            <PaginationBook booksSort={booksSort}/>
+          
+            {/* <PaginationBook booksSort={booksSort}/> */}
         </Box>
     )
 }

@@ -21,11 +21,13 @@ const classIcons = {
         padding: '4px',
         fontSize: '50px',
         color: ' #ae5e0b',
+        cursor: 'pointer'
     },
     iconsAccountProfile: {
         padding: '4px',
         fontSize: '300px',
         color: ' #ae5e0b',
+        cursor: 'pointer'
     },
     iconsMoreProfile: {
         cursor: 'pointer',

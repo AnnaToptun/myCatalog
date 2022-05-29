@@ -12,8 +12,9 @@ import { MySelect } from '../../UI/select/MySelect'
 import BuildCircleIcon from '@mui/icons-material/BuildCircle';
 import classIcons from '../../styles/classIcons'
 import classesCardBook from '../../styles/classesCardBook'
+import AddCircleIcon from '@mui/icons-material/AddCircle'
 export function CardBookDatails () {
-  const {books, user, genres, editCardUser} = useContext(CardsUserContext)
+  const {books, user, genres, editCardUser, avtors, addBooksAvtor} = useContext(CardsUserContext)
   const params = useParams()
   const route = useHistory()
   const book = books.filter((book) => {
@@ -40,8 +41,9 @@ export function CardBookDatails () {
   const updateBook= async(userId)=>{
     const id = userId.id
     editCardUser(id, 'Books', newFieldBook)
-    route.push(`/user/home/${params.id}`)
+    route.push(`/user/home`)
   }
+ 
   const titleHandler = (value) => {
     setNewFieldBook({...newFieldBook, title: value})
   }
@@ -59,16 +61,43 @@ export function CardBookDatails () {
   }
   const handleChange = (e) => {
     setNewFieldBook({...newFieldBook, genre: e.target.value})
-  
+  }
+  const avtorId = avtors.filter(avtor =>{
+    if(avtor.avtor === bookCurrent.avtor)
+    return (avtor)
+  })
+  const currentAvtor = avtorId[0]
+  const detailsAvtor = ()=>{
+    route.push(`/avtor/${currentAvtor.id}`)
+  }
+  const booksAvtor = (currentAvtor.booksAvtor)
+  const addBookAvtor = ()=>{
+    const id = currentAvtor.id
+    const bookId = bookCurrent.id
+    addBooksAvtor(id, booksAvtor, bookId)
+    route.push(`/user/home`)
   }
   return (
-    <Container p={10}>
-          <Box  my={4}>
-            <Card style={classesCardBook.cardDetails}  >
+    <Container p={10} my={4}>
+          <Box  >
+            <Card style={
+              (window.innerWidth < 500)
+                ?classesCardBook.cardDetailsSmall
+                :classesCardBook.cardDetails
+              }  >
               <img src={bookCurrent.img} style={classesCardBook.cardImgDetails}/>
               <Box style={classesCardBook.cardInfo}>
                 <span>Назва: {bookCurrent.title}</span>
-                <span>Автор: {bookCurrent.avtor}</span>
+                <span> Автор: 
+                  <a style={classesCardBook.cardAvtor} onClick={detailsAvtor}>{bookCurrent.avtor}</a>
+                 {
+                   !(booksAvtor.includes(bookCurrent.id))
+                   ?<AddCircleIcon  style={classIcons.icons} onClick={addBookAvtor}/>
+                   : ''
+                 } 
+                  
+                </span>
+                
                 <span>Жанр: {bookCurrent.genre.join(', ')}</span>
                 <span>Рік: {bookCurrent.year}</span>
                 <p>Опис: {bookCurrent.discribe}</p>

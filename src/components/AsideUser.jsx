@@ -7,7 +7,10 @@ import { CardBook } from './books/CardBook'
 import { SortedArray } from './books/SortedArray'
 import { AllCard } from './AllCard';
 import classesPages from '../styles/classesPages';
-
+import { Link } from '@material-ui/core';
+import {useHistory} from  'react-router-dom'
+import { Card } from '@material-ui/core';
+import { AllAvtors } from './avtors/AllAvtors';
 interface TabPanelProps {
   children: React.ReactNode;
   index: number;
@@ -30,11 +33,11 @@ function TabPanel(props: TabPanelProps) {
 }
 
 export function AsideUser() {
-  const {  genres, deleteBookUser, userCurrent, addBookUser, userIdBooks, booksPag, bookSort } =
+  const {  avtors, genres, deleteBookUser, userCurrent, addBookUser, userIdBooks, books} =
     useContext(CardsUserContext);
   const [value, setValue] = React.useState(0)
   const [sortBooks, setSortBooks] = useState([''])
-
+  
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
   }
@@ -45,6 +48,7 @@ export function AsideUser() {
       })
     )
   }
+  
   const delBookUser = async cardId => {
     const id = userCurrent.id;
     const booksid = cardId.id;
@@ -55,6 +59,8 @@ export function AsideUser() {
     console.log(userIdBooks);
     addBookUser(id, userIdBooks, card);
   }
+  
+ 
   return (
     <Box style={
       (window.innerWidth < 500)
@@ -76,7 +82,10 @@ export function AsideUser() {
       >
         <Tab 
           style={classesPages.pageAsideTab}
-          label={`Всі книги (${booksPag.length})`}/>
+          label={`Всі книги (${books.length})`}/>
+        <Tab 
+          style={classesPages.pageAsideTab}
+          label={`Автори (${avtors.length})`}/>
         <Tab 
           style={classesPages.pageAsideTab}
           label={`Мої книги (${userIdBooks.length})`} />
@@ -94,9 +103,11 @@ export function AsideUser() {
             delBookUser={delBookUser}
             addBook={addBook}
         />
-        
       </TabPanel>
-      <TabPanel value={value} index={1} style={classesPages.pageAllCard}>
+      <TabPanel value={value} index={1}>
+         <AllAvtors/>
+      </TabPanel>
+      <TabPanel value={value} index={2} style={classesPages.pageAllCard}>
         <Box style={classesPages.pageAllCard}>
           {userIdBooks.map(card => (
             <Box key={card.id} my={4} >
@@ -104,11 +115,10 @@ export function AsideUser() {
             </Box>
           ))}
         </Box>
-        
       </TabPanel>
 
       {genres.map((g, index) => (
-        <TabPanel value={value} key={g.id} index={index + 2}>
+        <TabPanel value={value} key={g.id} index={index + 3}>
           <SortedArray delBookUser={delBookUser} books={sortBooks} />
         </TabPanel>
       ))}

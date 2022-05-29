@@ -12,6 +12,8 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import profile from '../styles/Profile'
 import classIcons from '../styles/classIcons'
 import { Loading } from '../UI/loading/Loading'
+import classesPages from '../styles/classesPages'
+import { Card } from '@material-ui/core'
 
 export function Profile () {
   const {userCurrent, setBookId,editCardUser, users}= useContext(CardsUserContext)
@@ -22,6 +24,8 @@ export function Profile () {
     lastName: userCurrent.lastName,
     birthday:  userCurrent.birthday,
     img: userCurrent.img,
+    color: userCurrent.color,
+    bg: userCurrent.bg,
   })
   const route = useHistory()
   const findUserId = users.filter((u) =>{
@@ -36,6 +40,9 @@ export function Profile () {
     console.log(id)
     editCardUser(id, 'Users', newFieldUser)
     route.push('/user/home')
+  }
+  const back = ()=>{
+    route.push('/home')
   }
   const detailsCard =(card)=>{
     route.push(`/book/${card.id}`)
@@ -59,7 +66,10 @@ export function Profile () {
     <Container>
       {
         (findUserId.length)
-        ? <Box key={userId.id} style={profile.profile}>
+        ? <Box key={userId.id} style={(window.innerWidth < 500)
+          ?profile.profileSmall
+          :profile.profile
+        }>
               
               <Box>
                 {
@@ -110,16 +120,21 @@ export function Profile () {
                   <a style={profile.profileInfo} src={userId.email}>Email: {userId.email}</a>
                   <span style={profile.profileInfo}>Дата народження: {userId.birthday}</span>
                   <span style={profile.profileInfo}>Додані книги: </span>
+                  <Buttons onClick={back}>  Назад</Buttons>
+                  <Container  style={classesPages.pageAllCard}>
                   {
                     userId.userBooks.map(book =>(
-                      <Box key={book.id} style={profile.profileBook}>
-                        <p style={profile.profileBookName}>{book.avtor}. {book.title}</p>
-                        <span>{book.discribe}</span>
-                        <MoreHorizIcon  style={classIcons.iconsMoreProfile}  onClick={()=>detailsCard(book)}/>
+                      <Box key={book.id} m={2}>
+                        <Card style={classesPages.pageAvtors}>
+                          <img src={book.img} style={{height: '250px'}} alt=''/>
+                          <p style={profile.profileBookName}>{book.avtoe}{book.title}</p>
+                          <MoreHorizIcon  style={classIcons.iconsMoreProfile}   onClick={()=>detailsCard(book)}  />
+                        </Card>     
                       </Box>
 
                     ))
                   }
+                  </Container>
                 </Box>
                 
               </Box>

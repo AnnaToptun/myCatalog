@@ -1,21 +1,17 @@
 
 
 import  React, { useContext, useEffect, useState } from 'react';
-import Typography from '@mui/material/Typography';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
-import classes from '../UI/input/classes';
-import { MyInput } from '../UI/input/MyInput';
 import { CardsUserContext } from '../Context/CardsUserProvider';
-import ReactPaginate from 'react-paginate';
-import { AllCard } from './AllCard';
 import { MySelect } from '../UI/select/MySelect';
 import classesSelect from '../UI/select/classesSelect';
 import { Box, MenuItem } from '@mui/material';
 
 export default function PaginationBook({booksSort, children}) {
-  const {books, setBooksSort}= useContext(CardsUserContext)
-  const [booksPerPage, setBooksPerPage] = useState(10)
+  const {books, setBooksSort} = useContext(CardsUserContext)
+  
+  const [booksPerPage, setBooksPerPage] = useState(12)
   const [bookPage, setBookPage] = useState(booksSort.slice(0, booksPerPage))
   const [currentPage, setСurrentPage] = useState(1)
 
@@ -53,6 +49,7 @@ export default function PaginationBook({booksSort, children}) {
               <MenuItem  value={8}>8</MenuItem>                   
               <MenuItem  value={9}>9</MenuItem>                   
               <MenuItem  value={10}>10</MenuItem>                   
+              <MenuItem  value={12}>12</MenuItem>                   
         </MySelect>
         <Stack spacing={2}>  
           <Pagination 
