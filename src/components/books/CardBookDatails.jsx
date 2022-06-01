@@ -27,7 +27,6 @@ export function CardBookDatails () {
     img: bookId.img
   })
   
-
   const back = ()=>{
     route.push('/home')
   }
@@ -37,7 +36,6 @@ export function CardBookDatails () {
   })
   const currentAvtor = avtorIdCurrent[0]  
   const updateBook= async()=>{
-       
     setBookId({...bookId, ...newFieldBook})
     setBooksSort(booksSort.map(book =>{
       if(book.id === bookId.id){

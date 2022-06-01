@@ -6,8 +6,6 @@ import { NewComment} from './NewComment'
 export function Comments () {
   const {commentIdBooks, books} = useContext(CardsUserContext)
   
-  //const co
-  console.log('commentIdBooks', commentIdBooks)
   return (
     <Container >
       
