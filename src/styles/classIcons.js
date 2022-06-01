@@ -1,15 +1,21 @@
 const classIcons = {
     iconsAdd: {
-        padding: '4px',
-        fontSize: '30px',
+        position: 'absolute',
+        marginLeft: '94px',
+        marginTop: '328px',
+        fontSize: '50px',
         color: '#54b102',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        textAlign: 'right'
     },
     iconsDelete: {
-        padding: '4px',
-        fontSize: '30px',
+        position: 'absolute',
+        fontSize: '50px',
         color: ' #943d06',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        textAlign: 'right',
+        marginLeft: '94px',
+        marginTop: '328px',
     },
     icons: {
         padding: '4px',
@@ -25,7 +31,13 @@ const classIcons = {
     },
     iconsAccountProfile: {
         padding: '4px',
-        fontSize: '300px',
+        fontSize: '250px',
+        color: ' #ae5e0b',
+        cursor: 'pointer'
+    },
+    iconsAccountHeader: {
+        padding: '4px',
+        fontSize: '50px',
         color: ' #ae5e0b',
         cursor: 'pointer'
     },

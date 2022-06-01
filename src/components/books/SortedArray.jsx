@@ -1,18 +1,27 @@
 import React from 'react';
-import { Box } from '@material-ui/core';
+import { Box, Container } from '@material-ui/core';
 import { CardBook } from './CardBook';
 import classesPages from '../../styles/classesPages';
 
 export function SortedArray({ books, deleteBookUser, includeBook }) {
   return (
-    <Box style={classesPages.pageAllCard}>
+    <Container>
       {
-      books.map(card => (
-        <Box key={card.id} my={4}>
-          <CardBook includeBook={includeBook} deleteBookUser={deleteBookUser} card={card} />
-        </Box>
-      ))
+        (books.length)
+        ? <Container style={classesPages.pageAllCard}>
+            {
+              books.map(card => (
+                <Box key={card.id} my={4} mx={2} >
+                  <CardBook includeBook={includeBook} deleteBookUser={deleteBookUser} card={card} />
+                </Box>
+              ))
+            }
+          </Container>
+        : <p>Ще не додано жодної книги з цього жанру</p>
+      
       }
-    </Box>
-  );
+    </Container>
+      
+  )
+  
 }

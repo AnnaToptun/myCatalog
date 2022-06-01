@@ -7,12 +7,21 @@ const classNewComment = {
     fieldComment: {
         padding: '8px',
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        fontSize: '18px',
+        textAlign: 'justify',
+        columnGap: '20px'
     },
     commentImg: {
+        width: '100%',
+    },
+    commentImgBox: {
         width: '50px',
-        borderRadius: '10px ',
-        border: '2px solid# ae5e0b'
+        height: '50px',
+        borderRadius: '50%',
+        border: '2px solid #ae5e0b',
+        overflow: 'hidden'
     }
 }
 export default classNewComment

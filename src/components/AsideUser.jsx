@@ -11,6 +11,7 @@ import { Link } from '@material-ui/core';
 import {useHistory} from  'react-router-dom'
 import { Card } from '@material-ui/core';
 import { AllAvtors } from './avtors/AllAvtors';
+import { UserAllBook } from './books/UserAllBook';
 interface TabPanelProps {
   children: React.ReactNode;
   index: number;
@@ -27,7 +28,7 @@ function TabPanel(props: TabPanelProps) {
       id={`vertical-tabpanel-${index}`}
       aria-labelledby={`vertical-tab-${index}`}
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && <Box sx={{ p: 0, m: 0}}>{children}</Box>}
     </div>
   );
 }
@@ -48,16 +49,17 @@ export function AsideUser() {
       })
     )
   }
-  
   const delBookUser = async cardId => {
     const id = userCurrent.id;
     const booksid = cardId.id;
-    deleteBookUser(id, userIdBooks, booksid);
+    const userBooks = userCurrent.userBooks
+    deleteBookUser(id, userBooks, booksid); 
+    
   }
   const addBook = async card => {
     const id = userCurrent.id;
-    console.log(userIdBooks);
-    addBookUser(id, userIdBooks, card);
+    const userBooks = userCurrent.userBooks
+    addBookUser(id, userBooks, card);
   }
   
  
@@ -107,19 +109,17 @@ export function AsideUser() {
       <TabPanel value={value} index={1}>
          <AllAvtors/>
       </TabPanel>
-      <TabPanel value={value} index={2} style={classesPages.pageAllCard}>
-        <Box style={classesPages.pageAllCard}>
-          {userIdBooks.map(card => (
-            <Box key={card.id} my={4} >
-              <CardBook delBookUser={delBookUser} card={card} />
-            </Box>
-          ))}
-        </Box>
+      <TabPanel value={value} index={2}>
+        <UserAllBook
+           delBookUser={delBookUser}
+           addBook={addBook}
+           userIdBooks={userIdBooks}
+        />
       </TabPanel>
 
       {genres.map((g, index) => (
         <TabPanel value={value} key={g.id} index={index + 3}>
-          <SortedArray delBookUser={delBookUser} books={sortBooks} />
+          <SortedArray addBook={addBook} delBookUser={delBookUser} books={sortBooks} />
         </TabPanel>
       ))}
     </Box>

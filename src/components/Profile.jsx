@@ -14,40 +14,32 @@ import classIcons from '../styles/classIcons'
 import { Loading } from '../UI/loading/Loading'
 import classesPages from '../styles/classesPages'
 import { Card } from '@material-ui/core'
+import classesCardBook from '../styles/classesCardBook'
 
 export function Profile () {
-  const {userCurrent, setBookId,editCardUser, users}= useContext(CardsUserContext)
-  const params = useParams()
+  const {userCurrent, setBookId,editCardUser, users, setUserCurrent, userId, setUserId}= useContext(CardsUserContext)
   
   const [newFieldUser, setNewFieldUser] = useState({
     fistName: userCurrent.fistName,
     lastName: userCurrent.lastName,
     birthday:  userCurrent.birthday,
     img: userCurrent.img,
-    color: userCurrent.color,
-    bg: userCurrent.bg,
   })
   const route = useHistory()
-  const findUserId = users.filter((u) =>{
-    if(u.id === params.id){
-      return u
-    }
-  })
-  const userId = findUserId[0]
 
-  const updateUser = async(userId)=>{
+  const updateUser = async()=>{
     const id = userId.id
-    console.log(id)
+    setUserId({...userId, ...newFieldUser})
+    setUserCurrent({...userCurrent, ...newFieldUser})
     editCardUser(id, 'Users', newFieldUser)
-    route.push('/user/home')
+    console.log(userCurrent)
   }
   const back = ()=>{
     route.push('/home')
   }
   const detailsCard =(card)=>{
     route.push(`/book/${card.id}`)
-    console.log(card.id)
-    setBookId(card.id)
+    setBookId(card)
   }
   const nameHandler =(value)=>{
     setNewFieldUser({...newFieldUser, fistName: value})
@@ -65,15 +57,15 @@ export function Profile () {
   return (
     <Container>
       {
-        (findUserId.length)
+        (userId)
         ? <Box key={userId.id} style={(window.innerWidth < 500)
           ?profile.profileSmall
           :profile.profile
         }>
               
-              <Box>
+              <Box style={profile.profileImgBox}>
                 {
-                  (userId.img ==='')
+                  (userId.img === '')
                   ?<AccountCircleIcon style={classIcons.iconsAccountProfile}/>
                   :<img style={profile.profileImg} src={userId.img} alt=''/>
                 }
@@ -88,25 +80,21 @@ export function Profile () {
                           <MyInput
                             value={newFieldUser.fistName}
                             type='text'
-                            //placeholder="Ім'я"
                             onChange={(e)=>nameHandler(e.target.value)}
                           />
                           <MyInput
                             value={newFieldUser.lastName}
                             type='text'
-                            placeholder='Прізвище'
                             onChange={(e)=>lastNameHandler(e.target.value)}
                           />
                           <MyInput
                             value={newFieldUser.birthday}
                             type='date'
-                            placeholder='1965-10-25'
                             onChange={(e)=>birthdayHandler(e.target.value)}
                           />
                           <MyInput
                             value={newFieldUser.img}
                             type='text'
-                            placeholder='Аватар'
                             onChange={(e)=>imgHandler(e.target.value)}
                           />
                           <Buttons onClick={()=>updateUser(userId)}>Зберегти</Buttons>
@@ -124,11 +112,13 @@ export function Profile () {
                   <Container  style={classesPages.pageAllCard}>
                   {
                     userId.userBooks.map(book =>(
-                      <Box key={book.id} m={2}>
-                        <Card style={classesPages.pageAvtors}>
-                          <img src={book.img} style={{height: '250px'}} alt=''/>
+                      <Box key={book.id} my={2} mx={2}>
+                        <Card style={classesPages.pageAvtors} onClick={()=>detailsCard(book)}>
+                          <div style={classesCardBook.cardImgBox}>
+                            <img src={book.img} style={{width: '100%'}} alt=''/>
+                          </div>
                           <p style={profile.profileBookName}>{book.avtoe}{book.title}</p>
-                          <MoreHorizIcon  style={classIcons.iconsMoreProfile}   onClick={()=>detailsCard(book)}  />
+                          
                         </Card>     
                       </Box>
 

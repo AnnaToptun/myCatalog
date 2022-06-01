@@ -7,18 +7,22 @@ import { CardsUserContext } from '../../Context/CardsUserProvider'
 import classesPages from '../../styles/classesPages'
 
 export function AllAvtors () {
- const {avtors} = useContext(CardsUserContext)
+ const {avtors, setAvtorId} = useContext(CardsUserContext)
  const route = useHistory()
  const detailsAvtor = (card)=>{
+  setAvtorId(card)  
   route.push(`/avtor/${card.id}`)
 }
   return (
     <Container  style={classesPages.pageAllCard}>
       {avtors.map(card => (
-            <Box key={card.id} my={4}>
-              <Card style={classesPages.pageAvtors}>
-                <img src={card.img} style={{height: '250px'}} alt="" />
-                <a onClick={() => detailsAvtor(card)}>{card.avtor}</a>
+            <Box key={card.id} my={2} mx={2}>
+              <Card style={classesPages.pageAvtors} onClick={() => detailsAvtor(card)}>
+                <div  style={classesPages.avtorBookImgBox} >
+                  <img src={card.img} style={{height: '320px'}} alt="" />
+                </div>
+                
+                <a style={classesPages.avtorName}>{card.avtor}</a>
               </Card>
             </Box>
           ))}

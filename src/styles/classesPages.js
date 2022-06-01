@@ -2,7 +2,7 @@ const classesPages = {
     pageAllCard: {
         display: 'flex',
         flexWrap: 'wrap',
-        justifyContent: 'space-start'
+        justifyContent: 'center'
     },
     pageAllCardBox: {
         display: 'flex',
@@ -21,8 +21,8 @@ const classesPages = {
         alignItems: 'center',
     },
     pageAsideTabs: {
-        width: '250px',
-        height: '50vh',
+        width: '180px',
+        height: '100vh',
     },
     pageAsideTabsSmall: {
         width: '350px',
@@ -40,13 +40,26 @@ const classesPages = {
         padding: '20% 0'
     },
     pageAvtors: {
-        height: '400px',
+        height: '350px',
         width: '250px',
+        paddingBottom: '8px',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
-        textAling: 'center'
+        cursor: 'pointer'
+    },
+    avtorBookImgBox: {
+        width: '250px',
+        height: '320px',
+        display: 'flex',
+        justifyContent: 'center',
+        overflow: 'hidden'
+    },
+    avtorName: {
+        textAlign: 'center',
+        fontSize: '20px',
+        color: 'ae5e0b'
     },
     pageLoginButtons: {
         display: 'flex',

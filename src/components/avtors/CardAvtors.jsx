@@ -3,57 +3,57 @@ import React, {useContext, useState} from 'react'
 import {useParams} from 'react-router-dom'
 import classIcons from '../../styles/classIcons'
 import profile from '../../styles/Profile'
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { CardsUserContext } from '../../Context/CardsUserProvider'
 import { useHistory } from 'react-router-dom'
 import classesPages from '../../styles/classesPages'
+import classesCardBook from '../../styles/classesCardBook'
 import { Card } from '@material-ui/core'
 import { Container } from '@material-ui/core'
 import { Buttons } from '../../UI/button/Buttons'
 import { MyModal } from '../../UI/modal/myModal'
 import { MyInput } from '../../UI/input/MyInput'
 import BuildCircleIcon from '@mui/icons-material/BuildCircle';
+import classes from '../../UI/input/classes'
+import { TextArea } from '../../UI/textArea/TextArea'
 export function CardAvtors () {
-  const {  avtors, books, user, editCardUser} = useContext(CardsUserContext);
+  const {  avtors, setAvtors, books, user, editCardUser, setBookId, setCommentIdBooks, avtorId, setAvtorId} = useContext(CardsUserContext);
   const route = useHistory()
-  const params = useParams()
-  const avtorId = avtors.filter(avtor => {
-    if(avtor.id === params.id){
-      return avtor
-    }
-  })
-  const avtor = avtorId[0]
-  const avtorBooksId = avtor.booksAvtor
+  const avtorBooksId = avtorId.booksAvtor
   const avtorBooks = books.filter(book =>{
     if(avtorBooksId.includes(book.id)){
       return book
     }
   }) 
   const [newFieldAvtor, setNewFieldAvtor] = useState({
-    avtor: avtor.avtor,
-    discribe: avtor.discribe,
-    img: avtor.img
+    discribe: avtorId.discribe,
+    img: avtorId.img
   })
-  const avtorHandle = (value)=>{
-    setNewFieldAvtor({...avtor, avtor: value})
-  }
   const discribeHandle = (value)=>{
-    setNewFieldAvtor({...avtor, discribe: value})
+    setNewFieldAvtor({...newFieldAvtor, discribe: value})
   }
   const imgHandle = (value)=>{
-    setNewFieldAvtor({...avtor, img: value})
+    setNewFieldAvtor({...newFieldAvtor, img: value})
   }
   const detailsCard =(card)=>{
     route.push(`/book/${card.id}`)
+    setBookId(card)
+    setCommentIdBooks([...card.comments])
   }
   const back = ()=>{
     route.push('/home')
   }
   const updateAvtor = ()=>{
-    const id = avtor.id
-    editCardUser(id, 'Avtors', newFieldAvtor)
-    route.push(`/user/home`)
+    const id = avtorId.id
+    setAvtorId({...avtorId, ...newFieldAvtor})
+    setAvtors(avtors.map(avtor =>{
+      if(avtor.id === avtorId.id){
+        return {...avtor, ...newFieldAvtor}
+      } else{
+        return avtor
+      }
+    }))
+    editCardUser(id, 'Avtors', newFieldAvtor) 
   }
   return (
     
@@ -62,56 +62,56 @@ export function CardAvtors () {
           ?profile.profileSmall
           :profile.profile
         }>
-        <Box>
+        <Box >
           {
-            (avtor.img ==='')
+            (avtorId.img ==='')
             ?<AccountCircleIcon style={classIcons.iconsAccountProfile}/>
-            :<img style={profile.profileImg} src={avtor.img} alt=''/>
+            :<Box style={classesPages.avtorBookImgBox}>
+              <img style={{height: '320px'}} src={avtorId.img} alt=''/>
+            </Box>
           }
         </Box>
         <Box style={profile.profileDitails}>
-          <span  style={profile.profileName}>{avtor.avtor}</span>
-          <span>{avtor.discribe}</span>
-          <Buttons onClick={back}>  Назад</Buttons>
-          {
-            (user)
-            ?
-            <MyModal title={<BuildCircleIcon style={classIcons.iconsEditProfile}/>}>
-             
-              <MyInput
-                value={newFieldAvtor.avtor}
-                placeholder='Автор'
-                type='text'
-                onChange={(e)=>avtorHandle(e.target.value)}
-              />
+          <Box style={profile.profileEdit}>
+            <span  style={profile.profileName}>{avtorId.avtor}</span>
+            {
+              (user) 
+              ?
+              <MyModal title={<BuildCircleIcon style={classIcons.iconsEditProfile}/>}>
               
-              <MyInput
-                value={newFieldAvtor.discribe}
-                placeholder='Опис'
-                type='text'
-                onChange={(e)=>discribeHandle(e.target.value)}
-              />
-              <MyInput
-                value={newFieldAvtor.img}
-                placeholder='Обкладинка'
-                type='text'
-                onChange={(e)=>imgHandle(e.target.value)}
-              />
-              <Buttons onClick={()=>updateAvtor(avtor)}>Зберегти</Buttons>
-            </MyModal>
-            :''
-          }
+                <TextArea
+                  value={newFieldAvtor.discribe}
+                  placeholder='Опис'
+                  type='text'
+                  onChange={(e)=>discribeHandle(e.target.value)}
+                  style={classes.myInputDiscribeEdit}
+                />
+                <MyInput
+                  value={newFieldAvtor.img}
+                  placeholder='Обкладинка'
+                  type='text'
+                  onChange={(e)=>imgHandle(e.target.value)}
+                />
+                <Buttons onClick={()=>updateAvtor(avtorId)}>Зберегти</Buttons>
+              </MyModal>
+              :''
+            }
+          </Box>
+          
+          <p style={profile.profileDiscribe}>{avtorId.discribe}</p>
+          <Buttons onClick={back}>  Назад</Buttons>
+          
            <Container  style={classesPages.pageAllCard}>
             {
               avtorBooks.map(book =>(
-                <Box key={book.id} m={1}>
-                  <Card style={classesPages.pageAvtors}>
-                    <img src={book.img} style={{height: '250px'}} alt=''/>
+                <Box key={book.id} mx={2} my={2}>
+                  <Card style={classesPages.pageAvtors}  onClick={()=>detailsCard(book)}  >
+                    <div style={classesCardBook.cardImgBox}>
+                      <img src={book.img} style={{width: '100%'}} alt=''/>
+                    </div>
                     <p style={profile.profileBookName}>{book.title}</p>
-                    <MoreHorizIcon  style={classIcons.iconsMoreProfile}   onClick={()=>detailsCard(book)}  />
                   </Card>     
                 </Box>
-
               ))
             }
           </Container>

@@ -70,20 +70,21 @@ export function AllCard ({addBook, delBookUser}) {
             {
             (booksSort.length)
 
-                ? <Box style={classesPages.pageAllCard} >
-                    {
-                        booksSort.map((card)=>(
-                        <Box key={card.id}  my={4}>
-                            <CardBook 
-                                delBookUser={delBookUser}
-                                addBook={addBook}
-                                card={card}
-                            />
-                        </Box>))
-                    }
-                </Box>
+              ? <Container style={classesPages.pageAllCard} >
+                  {
+                    booksSort.map((card)=>(
+                      <Box key={card.id} mx={2}  my={2}>
+                        <CardBook 
+                          delBookUser={delBookUser}
+                          addBook={addBook}
+                          card={card}
+                        />
+                      </Box>
+                    ))
+                  }
+                </Container>
                 
-                : <Loading/>
+              : <Loading/>
             }   
              
         </Container>

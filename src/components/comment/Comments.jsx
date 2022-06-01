@@ -3,16 +3,16 @@ import { React, useContext } from 'react'
 import { CardsUserContext } from '../../Context/CardsUserProvider'
 import { NewComment} from './NewComment'
 
-export function Comments ({bookCurrent}) {
+export function Comments () {
   const {commentIdBooks, books} = useContext(CardsUserContext)
-  const commentsBook = bookCurrent.comments
+  
   //const co
-  console.log(commentsBook)
+  console.log('commentIdBooks', commentIdBooks)
   return (
     <Container >
       
-      { (commentsBook.length)
-        ?commentsBook.map((comment)=>(
+      { (commentIdBooks.length)
+        ?commentIdBooks.map((comment)=>(
           <NewComment key={comment.id} comment={comment}/>
         ))
         : 'Ще не додано жодного коментаря'

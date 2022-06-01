@@ -7,9 +7,10 @@ import { MyInput } from '../../UI/input/MyInput'
 import { MySelect } from '../../UI/select/MySelect' 
 import classesCreate from '../../styles/classesCreate'
 import classes from '../../UI/input/classes'
+import {TextArea} from '../../UI/textArea/TextArea'
 
 export function CreateCard () {
-  const { addCard, genres, avtors} = useContext(CardsUserContext)
+  const { addCard, genres, avtors, setBooksSort, booksSort} = useContext(CardsUserContext)
   const [cardBook, setCardBook] = useState({
     title: '',
     avtor: '',
@@ -24,7 +25,6 @@ export function CreateCard () {
     setCardBook({...cardBook, title: value})
   }
   const avtorHandle = (event)=>{
-    
     setCardBook({...cardBook, avtor: event.target.value})
   }
   const yearHandle = (value)=>{
@@ -36,9 +36,11 @@ export function CreateCard () {
   const imgHandle = (value)=>{
     setCardBook({...cardBook, img: value})
   }
+  
   const createCard = ()=>{
+    setBooksSort([...booksSort, {...cardBook}])
     addCard(cardBook)
-    route.push('/user/home')
+    route.push(`/user/home`)
   }
   const handleChange = (e) => {
     setCardBook({...cardBook, genre: e.target.value})
@@ -58,9 +60,7 @@ export function CreateCard () {
           <MySelect 
             value={cardBook.avtor}
             onChange={avtorHandle}
-            sstule
             >
-
               {
                 avtors.map((avtor)=>(
                   <MenuItem key={avtor.id} value={avtor.avtor}>{avtor.avtor}</MenuItem>
@@ -96,7 +96,7 @@ export function CreateCard () {
         </Box>
  
         
-        <MyInput
+        <TextArea
           type='text'
           value={cardBook.discribe}
           placeholder='Опис'

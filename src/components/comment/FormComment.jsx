@@ -17,7 +17,7 @@ export function FormComment ({bookCurrent}) {
   const createCommentBook = ()=>{
     const id = bookCurrent.id
     const comments = bookCurrent.comments
-    setCommentIdBooks([...commentIdBooks, comment])
+    setCommentIdBooks([...commentIdBooks, ...comments])
     setComment({...comment, comment: ''})
     addBookComment(id, comments, comment)
   }

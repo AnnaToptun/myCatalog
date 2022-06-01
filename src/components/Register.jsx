@@ -34,6 +34,7 @@ export function Register() {
     lastName: '',
     birthday: '1998-04-05',
     email: '',
+    img: '',
     password: '',
     userBooks: [],
     id: Date.now(),

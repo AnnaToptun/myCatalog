@@ -1,8 +1,10 @@
 const profile = {
     profile: {
+        padding: '20px',
         display: 'flex',
         justifyContent: 'space-around',
         alignItems: 'flex-start',
+        columnGap: '20px'
     },
     profileSmall: {
         display: 'flex',
@@ -28,6 +30,12 @@ const profile = {
         fontWeight: 'bold',
         textDecoration: 'underline',
     },
+
+    profileDiscribe: {
+        fontSize: '20px',
+        textIndent: '2em',
+        textAlign: 'justify',
+    },
     profileInfo: {
         color: '#000000',
         fontSize: '20px',
@@ -49,13 +57,20 @@ const profile = {
     },
     profileBookName: {
         color: '#ae5e0b',
-        fontSize: '20px',
+        fontSize: '16px',
         fontWeight: 'bold',
         textDecoration: 'underline',
     },
     profileImg: {
-        width: '300px',
-        padding: '10px'
+        height: '100%',
+    },
+    profileImgBox: {
+        width: '400px',
+        height: '300px',
+        overflow: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     }
 }
 export default profile

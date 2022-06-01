@@ -16,6 +16,7 @@ import { CardAvtors } from './avtors/CardAvtors'
 import { AddAvtor } from './create/AddAvtor'
 export function MainLoyout () {
   const {user} = useContext(CardsUserContext)
+ 
   return (
     
       <Container>
@@ -64,7 +65,7 @@ export function MainLoyout () {
               <Route path='/avtor/:id'>
                   <CardAvtors/>
                 </Route>
-              <Redirect to="/quest/home"/>
+              <Redirect to="/quest/login"/>
             </Switch>
           }
          

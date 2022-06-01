@@ -12,7 +12,7 @@ import classes from '../UI/checkbox/classes';
 import classesButton from '../UI/button/classes';
 
 export function Login() {
-  const { auth} = useContext(CardsUserContext);
+  const { auth, users} = useContext(CardsUserContext);
 
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
@@ -20,14 +20,24 @@ export function Login() {
   const [errorPass, setErrorPass] = useState(false);
   const [passCheckbox, setPassCheckbox] = useState(false);
   const [passOpen, setPassOpen] = useState('password');
+  const [user, setUser] = useState({});
   const route = useHistory();
+  
   const loginUse = e => {
     setLogin(e);
-    setErrorLogin(!isEmailValid());
+    users.filter(user =>{ 
+      if(user.email === e){
+        setErrorLogin(false)
+        setUser(user)
+      } else {
+        setErrorLogin(true)
+      }
+    })
+
   };
   const passwordUser = e => {
     setPassword(e);
-    setErrorPass(!isPassValid());
+    (user.pasword===e)? setErrorPass(false): setErrorPass(true)
   };
   const passCheckHandler = () => {
     if (passCheckbox) {
@@ -52,13 +62,10 @@ export function Login() {
       console.log(error);
     }
   };
-  const emailReg =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,2}\.[0-9]{1,3}\.[0-9]{1,2}\.[0-9]{1,2}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  const passSimpleReg = /(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]{6,}/g;
-  const isEmailValid = () => emailReg.test(login);
-  const isPassValid = () => passSimpleReg.test(password);
-  const disabledButton = (errorPass || errorLogin)
- 
+  
+  
+  const disabledButton = (!errorPass ||!errorLogin)
+ console.log('disabledButton', disabledButton)
   return (
     <Container>
       <FormGroup style={classesPages.pageLoginRegister}>
@@ -90,7 +97,7 @@ export function Login() {
           label="Show password"
         />
          <FormHelperText id="component-helper-text">
-            {(errorPass && errorLogin)? "Некорректно введений логін чи пароль": ''}
+            {(!errorPass && !errorLogin)? "Некорректно введений логін чи пароль": ''}
           </FormHelperText>
         <Box style={classesPages.pageLoginButtons}>
           <Buttons onClick={signIn }>Реєстрація</Buttons>

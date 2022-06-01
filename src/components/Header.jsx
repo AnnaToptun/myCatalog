@@ -8,12 +8,17 @@ import TemporaryDrawer from '../UI/drawer/TemporaryDrawer';
 import logo from '../img/log.png'
 import '../styles/Header.css'
 
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import classIcons from '../styles/classIcons';
 export function Header ({children}) {
-    const {user, auth, userCurrent} = useContext(CardsUserContext)
+    const {user, auth, userCurrent, setUserId} = useContext(CardsUserContext)
     const route = useHistory()
      const logOut = async () =>{
         await signOut(auth)
         route.push('/quest/login')
+     }
+     const myProfile = ()=>{
+        setUserId(userCurrent)
      }
     return (
         <Container>
@@ -32,9 +37,15 @@ export function Header ({children}) {
                             <Box className='header' >
                                 {
                                     (userCurrent.img === '')
-                                    ? <Link className='link-account' to={`/user/profile/${userCurrent.id}`}>{userCurrent.fistName} {userCurrent.lastName} </Link>
-                                    : <Link to={`/user/profile/${userCurrent.id}`}><img className='avatarUser' src={userCurrent.img} alt=''/></Link>
+                                    ? <Link to={`/user/profile/${userCurrent.id}`}><AccountCircleIcon style={classIcons.iconsAccountHeader} onClick={myProfile}/></Link>
+                                    : <Link 
+                                        to={`/user/profile/${userCurrent.id}`}
+                                        className='avatarUserBox'
+                                        >
+                                        <img className='avatarUser' src={userCurrent.img} alt='' onClick={myProfile}/>
+                                    </Link>
                                 }
+                                
                                 <TemporaryDrawer>
                                     <ul className='header-links'>
                                         <li><Link to={`/user/profile/${userCurrent.id}`}>Профіль </Link></li>
