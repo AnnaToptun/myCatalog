@@ -57,7 +57,6 @@ export function Login() {
     const loginPassword = password;
     try {
       const userCredential = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-      
     } catch (error) {
       console.log(error);
     }

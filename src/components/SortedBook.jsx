@@ -34,7 +34,7 @@ export function SortedBook () {
                 order: 'title',
                 sort:'asc'})
         }else {
-            return setBooksSort(books.filter(book => book.genre.includes(value)))
+            setBooksSort(books.filter(book => book.genre.includes(value)))
         }
     }
 

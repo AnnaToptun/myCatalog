@@ -18,7 +18,6 @@ export function MainLoyout () {
   const {user} = useContext(CardsUserContext)
  
   return (
-    
       <Container>
         <Header>
           {

@@ -10,7 +10,6 @@ import { Box, MenuItem } from '@mui/material';
 
 export default function PaginationBook({booksSort, children}) {
   const {books, setBooksSort} = useContext(CardsUserContext)
-  
   const [booksPerPage, setBooksPerPage] = useState(12)
   const [bookPage, setBookPage] = useState(booksSort.slice(0, booksPerPage))
   const [currentPage, setСurrentPage] = useState(1)

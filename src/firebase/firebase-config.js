@@ -12,11 +12,7 @@ const firebaseConfig = {
     appId: "1:541877662225:web:a8ef77babbef650b25f7b0"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore(app)
 export const auth = getAuth(app)
-
-//await sidnInWithEmailAndPassword(auth, email, password)
-//connectAuthEmulator(auth, 'http://localhosts:3000')

@@ -14,7 +14,6 @@ export function CreateGenre () {
   const route = useHistory()
   const newGenreHandler =(value)=>{
     setGenre({...genre, genre: value})
-   
   }
   const createGenre = ()=>{
     addGenre(genre)

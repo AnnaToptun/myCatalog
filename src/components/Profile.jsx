@@ -32,7 +32,6 @@ export function Profile () {
     setUserId({...userId, ...newFieldUser})
     setUserCurrent({...userCurrent, ...newFieldUser})
     editCardUser(id, 'Users', newFieldUser)
-    console.log(userCurrent)
   }
   const back = ()=>{
     route.push('/home')
