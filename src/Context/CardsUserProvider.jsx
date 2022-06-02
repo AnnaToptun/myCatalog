@@ -1,6 +1,6 @@
 import { React, createContext, useState, useEffect } from 'react'
 import { db, auth } from '../firebase/firebase-config'
-import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc, query, orderBy, limit, getDoc, startAfter, endBefore, endAt } from 'firebase/firestore'
+import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc, query, orderBy, limit, onSnapshot, startAfter, endBefore, endAt } from 'firebase/firestore'
 import { onAuthStateChanged } from 'firebase/auth'
 import { useHistory } from 'react-router-dom'
 import { createTheme } from '@mui/material'
@@ -19,6 +19,8 @@ export const CardsUserProvider = ({ children }) => {
   const [bookId, setBookId] = useState('')
   const [booksSort, setBooksSort] = useState([])
   const [avtorId, setAvtorId] = useState({})
+  const [list, setList] =  useState([]);
+const [page, setPage] =  useState(1);
  
   const [booksPag, setBooksPag] = useState({
     order: 'title',
@@ -29,10 +31,6 @@ export const CardsUserProvider = ({ children }) => {
   const limitBook = 12
   const route = useHistory();
   const booksCollectionRef = collection(db, 'Books')
-  const topBooksCollectionRef = query(collection(db, 'Books'), 
-    orderBy(booksPag.order, booksPag.sort), 
-    limit(limitBook))
- 
   const usersCollectionRef = collection(db, 'Users')
   const genresCollectionRef = collection(db, 'Genre')
   const avtorsCollectionRef = collection(db, 'Avtors')
@@ -40,30 +38,26 @@ export const CardsUserProvider = ({ children }) => {
   const getBookCards = async () => {
     const dataBooks = await getDocs(booksCollectionRef)
     const allBook = dataBooks.docs.map(doc => ({ ...doc.data(), id: doc.id }))
-    setBooks(allBook)
+    setBooks(allBook.sort((prev, next) =>  prev.title < next.title &&  -1))
     setBooksSort(allBook)
   }
   const getBookLimitStart = async () => {
+    const topBooksCollectionRef = query(collection(db, 'Books'), 
+    orderBy(booksPag.order, booksPag.sort), 
+    limit(limitBook),
+    startAfter(booksPag.start), 
+    onSnapshot((querySnapshot)=> { 
+      var items = [];
+      querySnapshot.forEach(function(doc) {
+          items.push({ key: doc.id, ...doc.data() });
+      });
+      console.log('first item ', items[0])
+      setList(items);
+      })
+    )
     const dataBooks = await getDocs(topBooksCollectionRef)
     const allBook = dataBooks.docs.map(doc => ({ ...doc.data(), id: doc.id }))
- 
-    const lastelem = allBook[allBook.length-1]
-    const first = allBook[0]
-    const newOrder = booksPag.order
-    if(newOrder === 'title'){
-      setBooksPag({...booksPag, 
-        start: lastelem.title,
-        before: first.title
-      }) 
-    }else{
-      setBooksPag({...booksPag, 
-        start: lastelem.avtor,
-        before: first.avtor
-      })
-    } 
     setBooksSort(allBook)
-    console.log('startArray', allBook)
-    
   }
  
   const getUsers = async (email) => {
@@ -187,7 +181,9 @@ export const CardsUserProvider = ({ children }) => {
         booksPag,setBooksPag,
         limitBook, 
         userId, setUserId,  
-        avtorId, setAvtorId,  
+        avtorId, setAvtorId, 
+        list, setList, 
+        page, setPage,
         addAvtor,
         addBookComment,
         addUser,       

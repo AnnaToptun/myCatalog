@@ -8,51 +8,49 @@ import { Loading } from '../UI/loading/Loading';
 import { Collections } from '@material-ui/icons';
 import { Buttons } from '../UI/button/Buttons'
 import { db, auth } from '../firebase/firebase-config'
-import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc, query, orderBy, limit, getDoc, startAfter, endBefore, endAt } from 'firebase/firestore'
+import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc, query, orderBy, limit, onSnapshot, startAfter, endBefore } from 'firebase/firestore'
 import { onAuthStateChanged } from 'firebase/auth'
 export function AllCard ({addBook, delBookUser}) {
-    const {booksSort, setBooksSort, booksPag, setBooksPag, limitBook} = useContext(CardsUserContext)
-    const next = query(collection(db, "Books"), orderBy(booksPag.order, booksPag.sort), startAfter(booksPag.start), limit(limitBook))
-    const prev = query(collection(db, "Books"), orderBy(booksPag.order, booksPag.sort), endBefore(booksPag.before), limit(limitBook))
+    const {booksSort, setBooksSort, booksPag, list, setList,setBooksPag, page, setPage,limitBook} = useContext(CardsUserContext)
+   
+    
     
     const newOrder = booksPag.order
     const getBookLimitPrev = async () => {
-        const dataBooks = await getDocs(prev)
-        const allBook = dataBooks.docs.map(doc => ({ ...doc.data(), id: doc.id }))
-        
-        const nextBooks = allBook[allBook.length - 1]
-        const prevBooks = allBook[0]
-        if(newOrder === 'title'){
-          setBooksPag({...booksPag, 
-            start: nextBooks.title,
-            before: prevBooks.title}
-            ) 
-        }else if(newOrder === 'avtor'){
-          setBooksPag({...booksPag,
-            start: nextBooks.avtor,
-            before: prevBooks.avtor
-          })
-        }
-        setBooksSort(allBook)
-        console.log('booksSort',booksSort)
+      const prev = query(collection(db, "Books"), 
+        orderBy(booksPag.order, booksPag.sort), 
+        endBefore(booksPag.before), 
+        limit(limitBook),
+        onSnapshot((querySnapshot) =>{
+          const items = [];
+          querySnapshot.forEach((doc) =>{
+              items.push({ key: doc.id, ...doc.data() });
+          });
+          setList(items);
+          setPage(page - 1)
+        })
+      )
+      const nextBook = await getDocs(prev);
+      const allBook = nextBook.docs.map(doc => ({ ...doc.data(), id: doc.id }))
+      setBooksSort(allBook)
+      console.log('prevBook',allBook)
     }
     const getBookLimitLast = async () => {
+        const next = query(collection(db, "Books"), 
+          orderBy(booksPag.order, booksPag.sort), 
+          startAfter(booksPag.start), 
+          limit(limitBook),
+          onSnapshot(function(querySnapshot) {
+            const items = [];
+            querySnapshot.forEach(function(doc) {
+                items.push({ key: doc.id, ...doc.data() });
+            });
+            setList(items);
+            setPage(page - 1)
+        }))
         const nextBook = await getDocs(next);
         const allBook = nextBook.docs.map(doc => ({ ...doc.data(), id: doc.id }))
         setBooksSort(allBook)
-        const nextBooks = allBook[allBook.length - 1]
-        const prevBooks = allBook[0]
-        if(newOrder === 'title'){
-          setBooksPag({...booksPag, 
-            start: nextBooks.title,
-            before: prevBooks.title}) 
-        }else if(newOrder === 'avtor'){
-          setBooksPag({...booksPag, 
-            start: nextBooks.avtor,
-            before: prevBooks.avtor
-          })
-        }
-        console.log('nextBook', allBook)
       }
       
 

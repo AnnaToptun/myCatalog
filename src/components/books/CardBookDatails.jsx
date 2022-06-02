@@ -68,8 +68,6 @@ export function CardBookDatails () {
     setNewFieldBook({...newFieldBook, genre: e.target.value})
   }
  
- 
-  console.log('bookId', bookId)
   return (
     <Container p={10} my={4}>
           <Box  >
