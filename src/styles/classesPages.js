@@ -37,7 +37,8 @@ const classesPages = {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: '20% 0'
+        padding: '20% 0',
+        rowGap: '30px'
     },
     pageAvtors: {
         height: '350px',
@@ -66,6 +67,7 @@ const classesPages = {
         justifyContent: 'center',
         alignItems: 'center',
         alignItems: 'wrap-reverse',
+
     },
     pageRegister: {
         display: 'flex',
@@ -73,5 +75,28 @@ const classesPages = {
         alignItems: 'center',
         padding: '20% 0'
     },
+    pageResetPassword: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontSize: '30px',
+        color: '#ae5e0b',
+        fontWeight: 'bold',
+        rowGap: '4px',
+    },
+    pageResetBox: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        rowGap: '30px',
+        padding: '20% 0',
+    },
+    forgotPassword: {
+        textDecoration: 'none',
+        fontSize: '16px',
+        color: '#ae5e0b',
+    }
 }
 export default classesPages

@@ -8,8 +8,10 @@ import { CheckBox } from '../UI/checkbox/CheckBox';
 import { MyInput } from '../UI/input/MyInput';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import classesPages from '../styles/classesPages';
-import classes from '../UI/checkbox/classes';
+import classesChackBox from '../UI/checkbox/classes';
 import classesButton from '../UI/button/classes';
+import classes from '../UI/input/classes';
+import { Link } from 'react-router-dom';
 
 export function Login() {
   const { auth, users} = useContext(CardsUserContext);
@@ -66,8 +68,12 @@ export function Login() {
   const disabledButton = (!errorPass ||!errorLogin)
  console.log('disabledButton', disabledButton)
   return (
-    <Container>
-      <FormGroup style={classesPages.pageLoginRegister}>
+    <Container style={classesPages.pageLoginRegister}>
+        <span  style={classesPages.pageResetPassword}>
+          Авторизація
+        </span>
+      <FormGroup style={classesPages.pageResetPassword}>
+        
         <MyInput
           error={errorLogin}
           value={login}
@@ -90,11 +96,14 @@ export function Login() {
               checked={passCheckbox}
               onChange={passCheckHandler}
               name="checked"
-              style={classes.myChackBox}
+              style={classesChackBox.myChackBox}
             />
-          }
+          } 
           label="Show password"
         />
+         <Link to='/quest/resetParol' style={classesPages.forgotPassword}>
+           Забули пароль
+         </Link>
          <FormHelperText id="component-helper-text">
             {(!errorPass && !errorLogin)? "Некорректно введений логін чи пароль": ''}
           </FormHelperText>

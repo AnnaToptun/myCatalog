@@ -48,7 +48,7 @@ export function Header ({children}) {
                                 
                                 <TemporaryDrawer>
                                     <ul className='header-links'>
-                                        <li><Link to={`/user/profile/${userCurrent.id}`}>Профіль </Link></li>
+                                        <li onClick={myProfile}><Link to={`/user/profile/${userCurrent.id}`}>Профіль </Link></li>
                                         <li><Link to="/user/home">Мої книги</Link></li>
                                         <li><Link to="/user/create">Створити книгу/жанр</Link></li>
                                         <li><Link to="/user/addAvtor">Додати автора</Link></li>

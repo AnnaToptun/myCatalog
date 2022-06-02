@@ -16,7 +16,7 @@ export function AllCard ({addBook, delBookUser}) {
     
     
     const newOrder = booksPag.order
-    const getBookLimitPrev = async () => {
+    const getBookLimitPrev = async ({item}) => {
       const prev = query(collection(db, "Books"), 
         orderBy(booksPag.order, booksPag.sort), 
         endBefore(booksPag.before), 
@@ -35,24 +35,27 @@ export function AllCard ({addBook, delBookUser}) {
       setBooksSort(allBook)
       console.log('prevBook',allBook)
     }
-    const getBookLimitLast = async () => {
-        const next = query(collection(db, "Books"), 
-          orderBy(booksPag.order, booksPag.sort), 
-          startAfter(booksPag.start), 
-          limit(limitBook),
-          onSnapshot(function(querySnapshot) {
-            const items = [];
-            querySnapshot.forEach(function(doc) {
-                items.push({ key: doc.id, ...doc.data() });
-            });
-            setList(items);
-            setPage(page - 1)
-        }))
-        const nextBook = await getDocs(next);
-        const allBook = nextBook.docs.map(doc => ({ ...doc.data(), id: doc.id }))
-        setBooksSort(allBook)
+    const getBookLimitLast = async ({item}) => {
+      if(list.length === 0) {
+        console.log("Це все, що ми маємо наразі!")
+      } else {
+          const next = query(collection(db, "Books"), 
+            orderBy(booksPag.order, booksPag.sort), 
+            startAfter(booksPag.start), 
+            limit(limitBook),
+            onSnapshot((querySnapshot)=>{
+              const items = [];
+              querySnapshot.forEach((doc)=>{
+                  items.push({ key: doc.id, ...doc.data() });
+              });
+              setList(items);
+              setPage(page + 1)
+          }))
+          const nextBook = await getDocs(next);
+          const allBook = nextBook.docs.map(doc => ({ ...doc.data(), id: doc.id }))
+          setBooksSort(allBook)
+        }
       }
-      
 
     return (
         <Container style={classesPages.pageAllCardBox}>

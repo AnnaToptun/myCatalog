@@ -1,6 +1,6 @@
-const classes = {
+const classesChackBox = {
     myChackBox: {
         color: '#ae5e0b'
     }
 }
-export default classes
+export default classesChackBox

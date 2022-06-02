@@ -127,7 +127,10 @@ export function Register() {
 }
   return (
     <Container  style={classesPages.pageLoginRegister}>
-      
+      <span  style={classesPages.pageResetPassword}>
+        Реєстрація
+      </span>
+      <Box  style={classesPages.pageResetPassword}>
         <Box style={(window.innerWidth<500)
           ?classesPages.pageAsideRegisterSmall
           :classesPages.pageAsideRegister
@@ -280,6 +283,7 @@ export function Register() {
           </Buttons>
         </Box>
 
+       </Box>
     </Container>
   );
 }

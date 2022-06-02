@@ -50,6 +50,16 @@ li {
     background: #fff;
 }
 
+li a {
+    display: block;
+    text-decoration: none;
+    width: 100%;
+    padding: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #ae5e0b;
+}
+
 li:hover {
     list-style-type: none;
     background: #ae5e0b;
@@ -59,8 +69,7 @@ li:hover {
     color: rgb(255, 251, 251);
 }
 
-.header-links li .link-account,
-a {
+.header-links li .link-account {
     color: #ae5e0b;
     text-decoration: none;
     font-size: 24px;

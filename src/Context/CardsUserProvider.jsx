@@ -47,7 +47,7 @@ const [page, setPage] =  useState(1);
     limit(limitBook),
     startAfter(booksPag.start), 
     onSnapshot((querySnapshot)=> { 
-      var items = [];
+      var items = []
       querySnapshot.forEach(function(doc) {
           items.push({ key: doc.id, ...doc.data() });
       });
