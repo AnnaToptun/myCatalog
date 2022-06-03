@@ -8,15 +8,17 @@ import { MyInput } from '../../UI/input/MyInput'
 import { MySelect } from '../../UI/select/MySelect' 
 import classesCreate from '../../styles/classesCreate'
 import classes from '../../UI/input/classes'
-
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import { TextArea } from '../../UI/textArea/TextArea'
 export const AddAvtor = () => {
-  const {addAvtor} = useContext(CardsUserContext)
+  const {addAvtor, createNotification, setAvtors, avtors} = useContext(CardsUserContext)
   const [avtor, setAvtor] = useState({
     avtor: '',
     booksAvtor: [],
     discribe: '',
     img: ''
   })
+  //Фіона Э. Хігінс
   const route = useHistory()
   const avtorHandle = (value)=>{
     setAvtor({...avtor, avtor: value})
@@ -28,9 +30,19 @@ export const AddAvtor = () => {
     setAvtor({...avtor, img: value})
   }
   const addNewAvtor = ()=>{
+    createNotification('success', ' ', `Вітаємо ви успішно додали автора ${avtor.avtor}` )
+    setAvtors([...avtors, avtor])
     addAvtor(avtor)
-    route.push('/user/home')
+    setAvtor({...avtor, 
+      avtor: '',
+      discribe: '',
+      img: ''
+    })
   }
+  const errorNewAvtor = ()=>{
+    createNotification('error', "Перевірте чи правильно введене ім'я автора", 'Помилка додавання автора' )
+  }
+  const avtorCreate = avtor.avtor
   return (
     <Container  style={classesCreate.card}>
       <FormGroup>
@@ -41,13 +53,13 @@ export const AddAvtor = () => {
           onChange={(e)=>avtorHandle(e.target.value)}
           label="Ім'я та прізвище автора"
         />
-        <MyInput
+        <TextArea
           type='text'
           value={avtor.discribe}
           placeholder="Про автора"
           onChange={(e)=>discribeHandle(e.target.value)}
           label="Про автора"
-        
+          style={classes.myInputDiscribe}
         />
         <MyInput
           type='text'
@@ -56,8 +68,14 @@ export const AddAvtor = () => {
           onChange={(e)=>imgHandle(e.target.value)}
           label="Фото автора"
         />
-        <Buttons onClick={addNewAvtor}>Створити</Buttons>
+        <Buttons 
+        onClick={
+          (avtorCreate.length > 4)
+          ? addNewAvtor
+          : errorNewAvtor
+        }>Створити</Buttons>
       </FormGroup>
+      <NotificationContainer/>
     </Container>
   )
 }

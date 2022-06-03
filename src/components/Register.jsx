@@ -11,6 +11,7 @@ import classes from '../UI/checkbox/classes';
 import classesPages from '../styles/classesPages';
 import classesSelect from '../UI/select/classesSelect';
 import classesButton from '../UI/button/classes';
+
 export function Register() {
   const { auth, addUser,  setUser } = useContext(CardsUserContext);
   const emailReg =
@@ -109,6 +110,7 @@ export function Register() {
       const userCredential = await createUserWithEmailAndPassword(auth, loginEmail, loginPassword)
       setUser(true)
       addUser({ ...fieldsForm });
+
     }
     catch(error){
       console.log(error)
@@ -283,7 +285,8 @@ export function Register() {
           </Buttons>
         </Box>
 
-       </Box>
+      </Box>
+      
     </Container>
   );
 }

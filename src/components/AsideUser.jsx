@@ -12,6 +12,7 @@ import {useHistory} from  'react-router-dom'
 import { Card } from '@material-ui/core';
 import { AllAvtors } from './avtors/AllAvtors';
 import { UserAllBook } from './books/UserAllBook';
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 interface TabPanelProps {
   children: React.ReactNode;
   index: number;
@@ -34,7 +35,7 @@ function TabPanel(props: TabPanelProps) {
 }
 
 export function AsideUser() {
-  const {  avtors, genres, deleteBookUser, userCurrent, addBookUser, userIdBooks, books} =
+  const {  avtors, genres, deleteBookUser, userCurrent, addBookUser, userIdBooks, books, createNotification} =
     useContext(CardsUserContext);
   const [value, setValue] = React.useState(0)
   const [sortBooks, setSortBooks] = useState([''])
@@ -54,12 +55,13 @@ export function AsideUser() {
     const booksid = cardId.id;
     const userBooks = userCurrent.userBooks
     deleteBookUser(id, userBooks, booksid); 
-    
+    createNotification('warning', `Ви видалили книгу ${cardId.title} зі свого каталогу`)
   }
   const addBook = async card => {
     const id = userCurrent.id;
     const userBooks = userCurrent.userBooks
     addBookUser(id, userBooks, card);
+    createNotification('success', `Ви успішно додали книгу ${card.title} до свого каталогу`)
   }
   
  
@@ -81,7 +83,7 @@ export function AsideUser() {
           ?classesPages.pageAsideTabsSmall
           :classesPages.pageAsideTabs
         }
-      >
+        >
         <Tab 
           style={classesPages.pageAsideTab}
           label={`Всі книги (${books.length})`}/>
@@ -119,9 +121,11 @@ export function AsideUser() {
 
       {genres.map((g, index) => (
         <TabPanel value={value} key={g.id} index={index + 3}>
-          <SortedArray addBook={addBook} delBookUser={delBookUser} books={sortBooks} />
+          <SortedArray delBookUser={delBookUser} books={sortBooks} />
         </TabPanel>
       ))}
+
+    <NotificationContainer/>
     </Box>
   );
 }

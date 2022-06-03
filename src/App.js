@@ -7,7 +7,7 @@ import './App.css';
 import { MainLoyout } from './components/MainLoyout';
 import { createUserWithEmailAndPassword, getAuth, updateProfile } from 'firebase/auth';
 import { CardsUserProvider } from './Context/CardsUserProvider';
-
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 
 export const AllCards = createContext()
@@ -18,6 +18,7 @@ function App() {
     <BrowserRouter>
      <Container className='App'>
         <CardsUserProvider>
+          
          <MainLoyout/>
         </CardsUserProvider>
       </Container>

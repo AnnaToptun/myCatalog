@@ -3,7 +3,8 @@ import { db, auth } from '../firebase/firebase-config'
 import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc, query, orderBy, limit, onSnapshot, startAfter, endBefore, endAt } from 'firebase/firestore'
 import { onAuthStateChanged } from 'firebase/auth'
 import { useHistory } from 'react-router-dom'
-import { createTheme } from '@mui/material'
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+
 export const CardsUserContext = createContext({})
 
 export const CardsUserProvider = ({ children }) => {
@@ -152,7 +153,25 @@ const [page, setPage] =  useState(1);
       }
     })
   }
-
+    
+    const createNotification = (type,  massage, title, ) => {
+      switch (type) {
+        case 'info':
+          NotificationManager.info(massage);
+          break;
+        case 'success':
+          NotificationManager.success(massage, title);
+          break;
+        case 'warning':
+          NotificationManager.warning(massage, title, 3000);
+          break;
+        case 'error':
+          NotificationManager.error( massage, title, 5000, () => {
+            alert('callback');
+          });
+          break;
+      }
+    }
  
   useEffect(() => {
     getUsers()
@@ -162,7 +181,7 @@ const [page, setPage] =  useState(1);
     getAvtors()
     getBookLimitStart()
   }, [])
-
+  ;
   return (
     <CardsUserContext.Provider
       value={{
@@ -170,7 +189,7 @@ const [page, setPage] =  useState(1);
         users,
         user,setUser,
         auth,
-        genres,
+        genres, setGenres,
         userCurrent,setUserCurrent,
         userIdBooks,
         commentIdBooks, setCommentIdBooks,
@@ -192,7 +211,9 @@ const [page, setPage] =  useState(1);
         addBookUser,
         addBooksAvtor,
         deleteBookUser,
-        editCardUser
+        editCardUser,
+        createNotification,
+        
       }}
     >
       {children}

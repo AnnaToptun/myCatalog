@@ -8,9 +8,9 @@ import { MySelect } from '../../UI/select/MySelect'
 import classesCreate from '../../styles/classesCreate'
 import classes from '../../UI/input/classes'
 import {TextArea} from '../../UI/textArea/TextArea'
-
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 export function CreateCard () {
-  const { addCard, genres, avtors, setBooksSort, booksSort} = useContext(CardsUserContext)
+  const { addCard, genres, avtors, setBooksSort, booksSort, createNotification} = useContext(CardsUserContext)
   const [cardBook, setCardBook] = useState({
     title: '',
     avtor: '',
@@ -40,7 +40,16 @@ export function CreateCard () {
   const createCard = ()=>{
     setBooksSort([...booksSort, {...cardBook}])
     addCard(cardBook)
-    route.push(`/user/home`)
+    createNotification('success', ' ', `Вітаємо ви успішно додали книгу ${cardBook.title}` )
+    setCardBook({...cardBook, 
+      title: '',
+      avtor: '',
+      genre: [],
+      comments: [],
+      year: 2022,
+      discribe: '',
+      img: ''
+    })
   }
   const handleChange = (e) => {
     setCardBook({...cardBook, genre: e.target.value})
@@ -119,6 +128,7 @@ export function CreateCard () {
           Створити
         </Buttons>
       </FormGroup>
+      <NotificationContainer/>
     </Container>
   )
 }

@@ -14,7 +14,7 @@ import { CardsUserContext } from '../Context/CardsUserProvider'
 import { Profile } from './Profile'
 import { CardAvtors } from './avtors/CardAvtors'
 import { AddAvtor } from './create/AddAvtor'
-import { ResetParol } from './create/ResetParol'
+import { ResetPassword } from './create/ResetPassword'
 export function MainLoyout () {
   const {user} = useContext(CardsUserContext)
  
@@ -60,7 +60,7 @@ export function MainLoyout () {
                 <AllCard/>
               </Route>
               <Route path="/quest/resetParol">
-                <ResetParol/>
+                <ResetPassword/>
               </Route>
               <Route path='/user/profile/:id'>
                   <Profile/>

@@ -12,9 +12,10 @@ import classesChackBox from '../UI/checkbox/classes';
 import classesButton from '../UI/button/classes';
 import classes from '../UI/input/classes';
 import { Link } from 'react-router-dom';
-
+import 'react-notifications/lib/notifications.css';
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 export function Login() {
-  const { auth, users} = useContext(CardsUserContext);
+  const { auth, users, createNotification} = useContext(CardsUserContext);
 
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
@@ -33,6 +34,7 @@ export function Login() {
         setUser(user)
       } else {
         setErrorLogin(true)
+        
       }
     })
 
@@ -57,11 +59,16 @@ export function Login() {
   const loginEmailPassword = async () => {
     const loginEmail = login;
     const loginPassword = password;
+ 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+      createNotification('success', 'Раді знову бачити Вас', 'Ласкаво просимо' ) 
+      
     } catch (error) {
       console.log(error);
+      createNotification('error', 'Логін чи пароль не вірні', 'Помилка входу' )
     }
+   
   };
   
   
@@ -104,9 +111,6 @@ export function Login() {
          <Link to='/quest/resetParol' style={classesPages.forgotPassword}>
            Забули пароль
          </Link>
-         <FormHelperText id="component-helper-text">
-            {(!errorPass && !errorLogin)? "Некорректно введений логін чи пароль": ''}
-          </FormHelperText>
         <Box style={classesPages.pageLoginButtons}>
           <Buttons onClick={signIn }>Реєстрація</Buttons>
           <Buttons 
@@ -125,6 +129,7 @@ export function Login() {
           </Buttons>
         </Box>
       </FormGroup>
+      <NotificationContainer/>
     </Container>
   );
 }

@@ -5,9 +5,9 @@ import { CardsUserContext } from '../../Context/CardsUserProvider'
 import { Buttons } from '../../UI/button/Buttons'
 import { MyInput } from '../../UI/input/MyInput'
 import classesCreate from '../../styles/classesCreate'
-
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 export function CreateGenre () {
-  const {addGenre} = useContext(CardsUserContext)
+  const {addGenre, createNotification, setGenres, genres} = useContext(CardsUserContext)
   const [genre, setGenre] = useState({
     genre: ''
   })
@@ -18,7 +18,8 @@ export function CreateGenre () {
   const createGenre = ()=>{
     addGenre(genre)
     setGenre({...genre, genre: ''})
-    route.push('/user/home')
+    setGenres([...genres, genre])
+    createNotification('success', ' ', `Вітаємо ви успішно додали жанр ${genre.genre}` )
   }
   
   return (
@@ -33,6 +34,7 @@ export function CreateGenre () {
         />
         <Buttons onClick={createGenre}>Create Genre</Buttons>
       </FormGroup>
+      <NotificationContainer/>
     </Container>
   )
 }
