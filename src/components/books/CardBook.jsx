@@ -20,7 +20,6 @@ export function CardBook ({card, addBook, delBookUser  }) {
  
   const route = useHistory()
   const detailsCard =()=>{
-    
     route.push(`/book/${card.id}`)
     setBookId(card)
     setCommentIdBooks([...card.comments])
@@ -61,9 +60,9 @@ export function CardBook ({card, addBook, delBookUser  }) {
           ?
             <Box style={classesCardBook.cardButton}>
               {
-                (!bookid.includes(card.id))
+                (!userIdBooks.includes(card.id))
                 ?<AddCircleIcon  style={classIcons.iconsAdd} onClick={()=>addBook(card)}/>
-                : <RemoveCircleIcon style={classIcons.iconsDelete}   onClick={()=> delBookUser(card)}/>
+                : <RemoveCircleIcon style={classIcons.iconsDelete} onClick={()=> delBookUser(card)}/>
               }
               
             </Box>

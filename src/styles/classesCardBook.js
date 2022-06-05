@@ -31,7 +31,7 @@ const classesCardBook = {
         fontSize: '18px',
     },
     cardImgDetails: {
-        height: '300px',
+        width: '250px',
     },
     cardDetails: {
         display: 'flex',

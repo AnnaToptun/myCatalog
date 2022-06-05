@@ -12,7 +12,7 @@ import { MySelect } from '../../UI/select/MySelect'
 import BuildCircleIcon from '@mui/icons-material/BuildCircle';
 import classIcons from '../../styles/classIcons'
 import classesCardBook from '../../styles/classesCardBook'
-import AddCircleIcon from '@mui/icons-material/AddCircle'
+import BookIcon from '@mui/icons-material/Book';
 import { TextArea } from '../../UI/textArea/TextArea'
 export function CardBookDatails () {
   const {booksSort, setBooksSort, user, genres, editCardUser, avtors, addBooksAvtor, bookId, setBookId,  avtorId, setAvtorId} = useContext(CardsUserContext)
@@ -28,7 +28,9 @@ export function CardBookDatails () {
   })
   
   const back = ()=>{
-    route.push('/home')
+    (user)
+    ? route.push('/user/home')
+    : route.push('/quest/home')
   }
   const avtorIdCurrent = avtors.filter(avtor =>{
     if(avtor.avtor === bookId.avtor)
@@ -76,8 +78,14 @@ export function CardBookDatails () {
                 ?classesCardBook.cardDetailsSmall
                 :classesCardBook.cardDetails
               }>
-              <img src={bookId.img} style={classesCardBook.cardImgDetails}/>
-              <Box style={classesCardBook.cardInfoDet}>
+              
+                {
+                  (bookId.img === "") 
+                  ? <BookIcon style={classesCardBook.cardImgDetails}/>
+                  : <img src={bookId.img} style={classesCardBook.cardImgDetails}/>
+                }
+              
+              <Box style={classesCardBook.cardInfoDet}> 
                 <Box style={classesCardBook.cardEdit}>
                   <span  style={classesCardBook.cardName}>{bookId.title}</span>
                   {

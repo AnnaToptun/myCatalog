@@ -10,7 +10,7 @@ import classesSelect from '../UI/select/classesSelect';
 
 
 export function SortedBook () {
-    const {books, genres,booksSort, setBooksSort, setBooks, booksPag, setBooksPag} = useContext(CardsUserContext)
+    const {books, genres, setBooksSort,  booksPag, setBooksPag, getBookLimitStart} = useContext(CardsUserContext)
     const [genre, setGenre] = useState('Оберіть жанр')
     const [search, setSearch] = useState('')
     const [sort, setSort] = useState('Сортувати за...')
@@ -18,9 +18,7 @@ export function SortedBook () {
     const searchHandle = (value)=>{
         setSearch(value)
         if(value.length < 2){
-            setBooksPag({...booksPag, 
-                order: 'title',
-                sort:'asc'})
+           getBookLimitStart()
         }else{
             setBooksSort(books.filter(book => book.title.toLowerCase().includes(value)))
     
@@ -30,9 +28,7 @@ export function SortedBook () {
     const sortGenre = (value)=>{
         setGenre(value)
         if(value==='Оберіть жанр' ){
-            setBooksPag({...booksPag, 
-                order: 'title',
-                sort:'asc'})
+            getBookLimitStart()
         }else {
             setBooksSort(books.filter(book => book.genre.includes(value)))
         }
@@ -42,25 +38,31 @@ export function SortedBook () {
         setSort(value)
 
         if(value === 'Сортувати за...'){
+            
             setBooksPag({...booksPag, 
                 order: 'title',
                 sort:'asc'})
+                getBookLimitStart()
         } else if(value === 'За автором А-Я'){
             setBooksPag({...booksPag, 
                 order: 'avtor',
-                sort:'desc'})
+                sort:'asc'})
+                getBookLimitStart()
         }else if(value === 'За автором Я-А'){
             setBooksPag({...booksPag, 
                 order: 'avtor',
-                sort:'asc'})
+                sort:'desc'})
+                getBookLimitStart()
         }else if(value === 'За назвою А-Я'){
             setBooksPag({...booksPag, 
                 order: 'title',
                 sort:'asc'})
+                getBookLimitStart()
         } else if(value === 'За назвою Я-А'){
             setBooksPag({...booksPag, 
                 order: 'title',
                 sort:'desc'})
+                getBookLimitStart()
         }
        
     }

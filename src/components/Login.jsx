@@ -73,7 +73,6 @@ export function Login() {
   
   
   const disabledButton = (!errorPass ||!errorLogin)
- console.log('disabledButton', disabledButton)
   return (
     <Container style={classesPages.pageLoginRegister}>
         <span  style={classesPages.pageResetPassword}>
@@ -114,15 +113,8 @@ export function Login() {
         <Box style={classesPages.pageLoginButtons}>
           <Buttons onClick={signIn }>Реєстрація</Buttons>
           <Buttons 
-            disabled={(disabledButton)
-              ? true
-              : false
-            }
-            style={
-              (disabledButton)
-              ? classesButton.myButtonDisable
-              : classesButton.myButton
-            }
+           
+            style={ classesButton.myButton }
             onClick={loginEmailPassword}
           >
             Вхід

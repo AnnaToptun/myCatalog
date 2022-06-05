@@ -17,8 +17,12 @@ import { Card } from '@material-ui/core'
 import classesCardBook from '../styles/classesCardBook'
 
 export function Profile () {
-  const {userCurrent, setBookId,editCardUser, users, setUserCurrent, userId, setUserId}= useContext(CardsUserContext)
-  
+  const {userCurrent, setBookId,editCardUser, setCommentIdBooks,books, setUserCurrent, userId, setUserId, userIdBooks}= useContext(CardsUserContext)
+  const usersBooks = books.filter(book =>{
+    if(userIdBooks.includes(book.id)){
+      return book
+    }
+  })
   const [newFieldUser, setNewFieldUser] = useState({
     fistName: userCurrent.fistName,
     lastName: userCurrent.lastName,
@@ -39,6 +43,7 @@ export function Profile () {
   const detailsCard =(card)=>{
     route.push(`/book/${card.id}`)
     setBookId(card)
+    setCommentIdBooks([...card.comments])
   }
   const nameHandler =(value)=>{
     setNewFieldUser({...newFieldUser, fistName: value})
@@ -110,7 +115,7 @@ export function Profile () {
                   <Buttons onClick={back}>  Назад</Buttons>
                   <Container  style={classesPages.pageAllCard}>
                   {
-                    userId.userBooks.map(book =>(
+                    usersBooks.map(book =>(
                       <Box key={book.id} my={2} mx={2}>
                         <Card style={classesPages.pageAvtors} onClick={()=>detailsCard(book)}>
                           <div style={classesCardBook.cardImgBox}>

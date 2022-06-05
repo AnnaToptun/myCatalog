@@ -43,13 +43,19 @@ export function AsideUser() {
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
   }
+  const usersBooks = books.filter(book =>{
+    if(userIdBooks.includes(book.id)){
+      return book
+    }
+  })
   const sortBooksGenre = sort => {
     setSortBooks(
-      userIdBooks.filter(book => {
+      usersBooks.filter(book => {
         return book.genre.includes(sort);
       })
     )
   }
+  
   const delBookUser = async cardId => {
     const id = userCurrent.id;
     const booksid = cardId.id;
@@ -60,11 +66,11 @@ export function AsideUser() {
   const addBook = async card => {
     const id = userCurrent.id;
     const userBooks = userCurrent.userBooks
-    addBookUser(id, userBooks, card);
+    addBookUser(id, userBooks, card.id);
     createNotification('success', `Ви успішно додали книгу ${card.title} до свого каталогу`)
   }
   
- 
+  
   return (
     <Box style={
       (window.innerWidth < 500)
@@ -115,7 +121,7 @@ export function AsideUser() {
         <UserAllBook
            delBookUser={delBookUser}
            addBook={addBook}
-           userIdBooks={userIdBooks}
+           userIdBooks={usersBooks}
         />
       </TabPanel>
 

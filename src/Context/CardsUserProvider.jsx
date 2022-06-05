@@ -16,12 +16,14 @@ export const CardsUserProvider = ({ children }) => {
   const [userCurrent, setUserCurrent] = useState({})
   const [userId, setUserId] = useState({})
   const [userIdBooks, setUserIdBooks] = useState([])
-  const [commentIdBooks, setCommentIdBooks] = useState([userIdBooks.co])
+  const [commentIdBooks, setCommentIdBooks] = useState([])
   const [bookId, setBookId] = useState('')
   const [booksSort, setBooksSort] = useState([])
   const [avtorId, setAvtorId] = useState({})
   const [list, setList] =  useState([]);
-const [page, setPage] =  useState(1);
+  const [page, setPage] =  useState(1);
+  const [last, setLast] =  useState({});
+  const [first, setFirst] =  useState({});
  
   const [booksPag, setBooksPag] = useState({
     order: 'title',
@@ -29,45 +31,45 @@ const [page, setPage] =  useState(1);
     start: '',
     before: '',
   })
-  const limitBook = 12
+  const limitBook = 6
   const route = useHistory();
-  const booksCollectionRef = collection(db, 'Books')
   const usersCollectionRef = collection(db, 'Users')
   const genresCollectionRef = collection(db, 'Genre')
   const avtorsCollectionRef = collection(db, 'Avtors')
-    
+  const booksCollectionRef = collection(db, 'Books')
+  
   const getBookCards = async () => {
     const dataBooks = await getDocs(booksCollectionRef)
     const allBook = dataBooks.docs.map(doc => ({ ...doc.data(), id: doc.id }))
     setBooks(allBook.sort((prev, next) =>  prev.title < next.title &&  -1))
-    setBooksSort(allBook)
+    
   }
   const getBookLimitStart = async () => {
-    const topBooksCollectionRef = query(collection(db, 'Books'), 
-    orderBy(booksPag.order, booksPag.sort), 
-    limit(limitBook),
-    startAfter(booksPag.start), 
-    onSnapshot((querySnapshot)=> { 
-      var items = []
-      querySnapshot.forEach(function(doc) {
-          items.push({ key: doc.id, ...doc.data() });
-      });
-      console.log('first item ', items[0])
-      setList(items);
-      })
+    const booksStartRef = query(collection(db, 'Books'), 
+      orderBy(booksPag.order, booksPag.sort), 
+      limit(limitBook)
     )
-    const dataBooks = await getDocs(topBooksCollectionRef)
-    const allBook = dataBooks.docs.map(doc => ({ ...doc.data(), id: doc.id }))
+    const documentSnapshots = await getDocs(booksStartRef)
+    const allBook = documentSnapshots.docs.map(doc => ({ ...doc.data(), id: doc.id }))
     setBooksSort(allBook)
+    const lastbook = allBook[allBook.length-1]
+   if (booksPag.order === 'title'){
+     setBooksSort(allBook)
+      setLast(lastbook.title)
+    }else {
+      setBooksSort(allBook)
+      setLast(lastbook.avtor)
+    }
+
   }
- 
+
   const getUsers = async (email) => {
     const dataUsers = await getDocs(usersCollectionRef)
     const allUsers = dataUsers.docs.map(doc => ({ ...doc.data(), id: doc.id }))
     setUsers(allUsers)
     allUsers.filter(user => {
       if (user.email === email) {
-        const booksUser = user.userBooks
+        const booksUser = user.userBooks 
         return (
           setUserCurrent(user),
           setUserIdBooks(booksUser)
@@ -132,11 +134,11 @@ const [page, setPage] =  useState(1);
 
   const deleteBookUser = async (id, userBooks, delBooks) => {
     const userDoc = doc(db, 'Users', id)
-    const newArray = userBooks.filter(book => book.id !== delBooks);
+    const newArray = userBooks.filter(book => book !== delBooks);
     const newField = { userBooks: newArray }
     await updateDoc(userDoc, newField)
     console.log(delBooks)
-    setUserIdBooks(userIdBooks.filter(book => book.id !== delBooks))
+    setUserIdBooks(userIdBooks.filter(book => book !== delBooks))
     getUsers()
   }
 
@@ -213,7 +215,9 @@ const [page, setPage] =  useState(1);
         deleteBookUser,
         editCardUser,
         createNotification,
-        
+        last, setLast,
+        first, setFirst,
+        getBookLimitStart
       }}
     >
       {children}
