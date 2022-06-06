@@ -50,7 +50,7 @@ export function MainLoyout () {
               <Route path='/book/:id'>
                 <CardBookDatails/>
               </Route>
-              <Route path='/quest/login'>
+              <Route path='/'>
                 <Login/>
               </Route>
               <Route path="/quest/register">
@@ -68,7 +68,7 @@ export function MainLoyout () {
               <Route path='/avtor/:id'>
                   <CardAvtors/>
                 </Route>
-              <Redirect to="/quest/login"/>
+              <Redirect to="/"/>
             </Switch>
           }
          
